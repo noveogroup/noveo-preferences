@@ -1,0 +1,11 @@
+ext.buildVersions = [
+        code: 1,
+        name: "0.0.1",
+]
+
+ext.sdkVersions = [
+        minSdk    : 14,
+        targetSdk : 26,
+        compileSdk: 26,
+        buildTools: "27.0.1",
+]

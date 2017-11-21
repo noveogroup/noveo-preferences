@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion sdkVersions.compileSdk
+    buildToolsVersion sdkVersions.buildTools
+
+    defaultConfig {
+        applicationId "com.noveogroup.preferences.sample"
+        minSdkVersion sdkVersions.minSdk
+        targetSdkVersion sdkVersions.targetSdk
+        versionCode buildVersions.code
+        versionName buildVersions.name
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation libraries.supportAppCompat
+
+    /* Boilerplate code generation */
+    compileOnly libraries.lombok
+    annotationProcessor libraries.lombok
+    implementation libraries.streamSupport
+
+    /* Rx */
+    implementation libraries.rxJava2
+    implementation libraries.slf4j
+    implementation libraries.logbackCore
+    implementation(libraries.logbackClassic) {
+        exclude group: "com.google.android", module: "android"
+    }
+
+    /* Moxy */
+    implementation libraries.moxy
+    implementation libraries.moxyCompat
+    annotationProcessor libraries.moxyCompiler
+
+    implementation project(":preferenceentity")
+}

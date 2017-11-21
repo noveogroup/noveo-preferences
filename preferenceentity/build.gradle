@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+apply plugin: "me.tatarka.retrolambda"
+apply plugin: "com.noveogroup.android.check"
+
+android {
+    compileSdkVersion sdkVersions.compileSdk
+    buildToolsVersion sdkVersions.buildTools
+
+    publishNonDefault true
+
+    defaultConfig {
+        minSdkVersion sdkVersions.minSdk
+        targetSdkVersion sdkVersions.targetSdk
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        checkAllWarnings true
+        disable "AllowBackup"
+        disable "ContentDescription"
+        disable "InvalidPackage"
+        disable "SpUsage"
+        disable "IconMissingDensityFolder"
+        disable "SelectableText"
+        disable "RtlCompat", "RtlEnabled", "RtlHardcoded", "RtlSymmetry"
+        disable "MissingPrefix"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    /* test dependencies */
+    testImplementation libraries.junit
+    testImplementation libraries.mockitoCore
+
+    /* Support */
+    implementation libraries.supportAnnotations
+
+    /* Utilities */
+    implementation libraries.streamSupport
+
+    /* Boilerplate code generation */
+    compileOnly libraries.lombok
+    annotationProcessor libraries.lombok
+
+    /* Rx */
+    implementation libraries.rxJava2
+    implementation libraries.slf4j
+
+}

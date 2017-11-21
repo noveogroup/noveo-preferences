@@ -1,0 +1,14 @@
+# Mac OS
+.DS_Store
+
+# Android
+local.properties
+captures
+
+# Gradle
+.gradle
+build
+
+# IntelliJ Idea
+.idea
+*.iml

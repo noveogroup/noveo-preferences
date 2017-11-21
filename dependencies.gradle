@@ -1,0 +1,58 @@
+ext.versions = [
+        /*GRADLE DEPENDENCIES*/
+        androidGradlePlugin        : "3.0.0",
+        noveoCheckPlugin           : "1.2.4",
+        retrolambdaPlugin          : "3.6.1",
+        lombokPlugin               : "0.2.3.a2",
+
+        /*APPLICATION DEPENDENCIES*/
+        supportLibraryVersion      : "26.1.0",
+        supportAnnotations         : "27.0.0",
+        slf4jVersion               : "1.7.25",
+        logbackVersion             : "1.1.1-6",
+        lombokVersion              : "1.16.18",
+        rxVersion                  : "2.1.1",
+        moxyVersion                : "1.5.3",
+        streamSupportVersion       : "1.5.6",
+
+        /*TEST DEPENDENCIES*/
+        junitVersion               : "4.12",
+        mockitoVersion             : "2.8.47",
+]
+
+ext.gradlePlugins = [
+        android    : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+        noveoCheck : "com.noveogroup.android:check:$versions.noveoCheckPlugin",
+        retrolambda: "me.tatarka:gradle-retrolambda:$versions.retrolambdaPlugin",
+        lombok     : "me.tatarka.retrolambda.projectlombok:lombok.ast:$versions.lombokPlugin",
+]
+
+ext.libraries = [
+        /* Test dependencies */
+        junit                    : "junit:junit:$versions.junitVersion",
+        mockitoCore              : "org.mockito:mockito-core:$versions.mockitoVersion",
+
+        /* Support Libraries */
+        supportLibrary           : "com.android.support:support-v4:$versions.supportLibraryVersion",
+        supportAppCompat         : "com.android.support:appcompat-v7:$versions.supportLibraryVersion",
+        supportAnnotations       : "com.android.support:support-annotations:$versions.supportAnnotations",
+
+        /* Logger */
+        slf4j                    : "org.slf4j:slf4j-api:$versions.slf4jVersion",
+        logbackCore              : "com.github.tony19:logback-android-core:$versions.logbackVersion",
+        logbackClassic           : "com.github.tony19:logback-android-classic:$versions.logbackVersion",
+
+        /* Moxy */
+        moxy                     : "com.arello-mobile:moxy:$versions.moxyVersion",
+        moxyCompat               : "com.arello-mobile:moxy-app-compat:$versions.moxyVersion",
+        moxyCompiler             : "com.arello-mobile:moxy-compiler:$versions.moxyVersion",
+
+        /* Boilerplate code generation*/
+        lombok                   : "org.projectlombok:lombok:$versions.lombokVersion",
+
+        /* Rx */
+        rxJava2                  : "io.reactivex.rxjava2:rxjava:$versions.rxVersion",
+
+        /* Utilities */
+        streamSupport            : "net.sourceforge.streamsupport:streamsupport:$versions.streamSupportVersion"
+]
