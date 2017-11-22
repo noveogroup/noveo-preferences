@@ -2,17 +2,17 @@ apply plugin: 'com.android.library'
 apply plugin: "me.tatarka.retrolambda"
 apply plugin: "com.noveogroup.android.check"
 
+description = 'Easy SharedPreferences API with RxJava2 Integration'
+
 android {
     compileSdkVersion sdkVersions.compileSdk
     buildToolsVersion sdkVersions.buildTools
 
-    publishNonDefault true
-
     defaultConfig {
         minSdkVersion sdkVersions.minSdk
         targetSdkVersion sdkVersions.targetSdk
-        versionCode 1
-        versionName "1.0"
+        versionCode buildVersions.code
+        versionName buildVersions.name
     }
 
     buildTypes {
@@ -55,12 +55,73 @@ dependencies {
     /* Utilities */
     implementation libraries.streamSupport
 
-    /* Boilerplate code generation */
-    compileOnly libraries.lombok
-    annotationProcessor libraries.lombok
-
     /* Rx */
     implementation libraries.rxJava2
     implementation libraries.slf4j
 
 }
+
+def publishProperties = new Properties()
+publishProperties.load(new FileInputStream(rootProject.file("publish.properties")))
+
+ext {
+    artifactId = publishProperties.getProperty("artifact")
+    groupId = publishProperties.getProperty("group")
+    version = buildVersions.name
+    name = publishProperties.getProperty("name")
+    desc = publishProperties.getProperty("desc")
+    website = publishProperties.getProperty("github")
+    pom = {
+        licenses {
+            license {
+                name 'The MIT License (MIT)'
+                url 'http://opensource.org/licenses/MIT'
+                distribution 'repo'
+            }
+        }
+        scm {
+            url publishProperties.getProperty("github")
+            connection publishProperties.getProperty("scm")
+            developerConnection publishProperties.getProperty("scm")
+        }
+        issueManagement {
+            system 'GitHub'
+            url publishProperties.getProperty('github') + '/issues'
+        }
+        developers {
+            developer {
+                name 'Alexandr Vaytsekhovskiy'
+                url 'https://github.com/avaytsekhovskiy'
+                roles {
+                    role 'architect'
+                    role 'developer'
+                }
+            }
+            developer {
+                name 'Sergey Malichenko'
+                url 'https://github.com/smalichenko'
+                roles {
+                    role 'developer'
+                }
+            }
+        }
+    }
+    bintray = {
+        repo = publishProperties.getProperty("bintrayRepo")
+        name = publishProperties.getProperty("artifact")
+        licenses = ['MIT']
+        vcsUrl = publishProperties.getProperty("github")
+        issueTrackerUrl = publishProperties.getProperty("github") + "/issues"
+        websiteUrl = publishProperties.getProperty("github")
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            name = buildVersions.name
+            vcsTag = buildVersions.name
+        }
+    }
+}
+
+project.archivesBaseName = 'preferenceentity' // to fix that project name different from artifact name
+apply from: 'androidmaven.gradle'
+apply from: 'bintray.gradle'

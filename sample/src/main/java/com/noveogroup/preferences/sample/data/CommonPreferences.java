@@ -33,6 +33,7 @@ public class CommonPreferences {
                 return defaultValue;
             })
             .keyFilter((key, entityKey) -> TextUtils.equals(entityKey + ".name", key) || TextUtils.equals(entityKey + ".age", key))
+            .canBeNull(true)
             .build();
     // Keep strong references to entity. Otherwise observers/listeners may be lost (due to SP Android implementation)
     public final PreferenceEntity<Boolean> enabled;

@@ -11,7 +11,6 @@ import java.util.Map;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import java8.util.Optional;
-import lombok.SneakyThrows;
 
 public class NoveoValueProvider<T> implements ValueProvider<T> {
 
@@ -35,10 +34,13 @@ public class NoveoValueProvider<T> implements ValueProvider<T> {
         preferences.registerOnSharedPreferenceChangeListener(listener);
     }
 
-    @SneakyThrows
     private void notifyListener(final Consumer<Optional<T>> changeListener, final String changedKey) {
-        if (filter.apply(changedKey)) {
-            changeListener.accept(entity.read());
+        try {
+            if (filter.apply(changedKey)) {
+                changeListener.accept(entity.read());
+            }
+        } catch (final Exception original) {
+            Utils.sneakyThrow(original);
         }
     }
 

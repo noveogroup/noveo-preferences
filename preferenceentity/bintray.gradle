@@ -1,0 +1,16 @@
+apply plugin: 'com.jfrog.bintray'
+
+def propertiesFile = rootProject.file("local.properties")
+def properties = new Properties()
+properties.load(new FileInputStream(propertiesFile))
+
+bintray {
+    user = properties.getProperty("bintrayUser")
+    key = properties.getProperty("bintrayKey")
+    publications = ['Production']
+    configurations = ['archives']
+    pkg bintray
+}
+
+// Dependency to call only bintrayUpload task
+bintrayUpload.dependsOn install

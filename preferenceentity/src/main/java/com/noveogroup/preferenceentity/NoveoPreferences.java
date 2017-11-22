@@ -9,16 +9,10 @@ import com.noveogroup.preferenceentity.api.PreferenceEntity;
 
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
 public class NoveoPreferences {
 
-    @Setter
-    @Getter
     private static boolean debug = false;
-
     private final SharedPreferences preferences;
 
     /**
@@ -54,11 +48,19 @@ public class NoveoPreferences {
         this.preferences = preferences;
     }
 
-    public PreferenceEntity<Boolean> getBoolean(final String key) {
-        return getBoolean(key, null);
+    public static boolean isDebug() {
+        return debug;
     }
 
-    public PreferenceEntity<Boolean> getBoolean(final String key, @Nullable final Boolean defaultValue) {
+    public static void setDebug(final boolean debug) {
+        NoveoPreferences.debug = debug;
+    }
+
+    public PreferenceEntity<Boolean> getBoolean(final String key) {
+        return getBoolean(key, false);
+    }
+
+    public PreferenceEntity<Boolean> getBoolean(final String key, final boolean defaultValue) {
         return new NoveoPreferenceEntity<>(key, PreferenceStrategy.BOOLEAN, defaultValue, preferences);
     }
 
@@ -71,26 +73,26 @@ public class NoveoPreferences {
     }
 
     public PreferenceEntity<Float> getFloat(final String key) {
-        return getFloat(key, null);
+        return getFloat(key, Float.MIN_VALUE);
     }
 
-    public PreferenceEntity<Float> getFloat(final String key, @Nullable final Float defaultValue) {
+    public PreferenceEntity<Float> getFloat(final String key, final float defaultValue) {
         return new NoveoPreferenceEntity<>(key, PreferenceStrategy.FLOAT, defaultValue, preferences);
     }
 
     public PreferenceEntity<Integer> getInt(final String key) {
-        return getInt(key, null);
+        return getInt(key, Integer.MIN_VALUE);
     }
 
-    public PreferenceEntity<Integer> getInt(final String key, @Nullable final Integer defaultValue) {
+    public PreferenceEntity<Integer> getInt(final String key, final int defaultValue) {
         return new NoveoPreferenceEntity<>(key, PreferenceStrategy.INTEGER, defaultValue, preferences);
     }
 
     public PreferenceEntity<Long> getLong(final String key) {
-        return getLong(key, null);
+        return getLong(key, Long.MIN_VALUE);
     }
 
-    public PreferenceEntity<Long> getLong(final String key, @Nullable final Long defaultValue) {
+    public PreferenceEntity<Long> getLong(final String key, final long defaultValue) {
         return new NoveoPreferenceEntity<>(key, PreferenceStrategy.LONG, defaultValue, preferences);
     }
 

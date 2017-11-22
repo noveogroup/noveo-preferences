@@ -6,17 +6,18 @@ import android.support.annotation.Nullable;
 import com.noveogroup.preferenceentity.api.PreferenceEntity;
 import com.noveogroup.preferenceentity.api.ValueProvider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import java8.util.Optional;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @SuppressWarnings({"unused,WeakerAccess", "SameParameterValue"})
 public class NoveoPreferenceEntity<T> implements PreferenceEntity<T> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoveoPreferenceEntity.class);
 
     private final SharedPreferences preferences;
     private final String key;
@@ -42,7 +43,7 @@ public class NoveoPreferenceEntity<T> implements PreferenceEntity<T> {
 
     private static void log(final String key, final String message, final Object... args) {
         if (NoveoPreferences.isDebug()) {
-            log.debug('(' + key + ')' + ' ' + message, args);
+            LOGGER.debug('(' + key + ')' + ' ' + message, args);
         }
     }
 
@@ -53,16 +54,16 @@ public class NoveoPreferenceEntity<T> implements PreferenceEntity<T> {
 
     @Override
     public void remove() throws IOException {
-        save(null);
+        logOrThrow(
+                Utils.editPreferences(preferences, editor -> strategy.remove(editor, key)),
+                "removed");
     }
 
     @Override
     public void save(@Nullable final T value) throws IOException {
-        if (editPreferences(editor -> strategy.set(editor, key, value))) {
-            log(key, "changed to {}", value);
-        } else {
-            throw new IOException("Something went really wrong. SharedPreferences.editor.commit() returns false. Check Your FS");
-        }
+        logOrThrow(
+                Utils.editPreferences(preferences, editor -> strategy.set(editor, key, value)),
+                "changed to {}", value);
     }
 
     @Override
@@ -82,10 +83,11 @@ public class NoveoPreferenceEntity<T> implements PreferenceEntity<T> {
         return providerDelegate;
     }
 
-    @SneakyThrows
-    private boolean editPreferences(final Consumer<SharedPreferences.Editor> action) {
-        final SharedPreferences.Editor editor = preferences.edit();
-        action.accept(editor);
-        return editor.commit();
+    private void logOrThrow(final boolean log, final String message, final Object... args) throws IOException {
+        if (log) {
+            log(key, "removed", args);
+        } else {
+            throw new IOException("Something went really wrong. SharedPreferences.editor.commit() returns false. Check Your FS");
+        }
     }
 }

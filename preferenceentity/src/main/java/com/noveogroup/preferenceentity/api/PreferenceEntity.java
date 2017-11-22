@@ -1,7 +1,5 @@
 package com.noveogroup.preferenceentity.api;
 
-import com.noveogroup.preferenceentity.NoveoRxPreferenceEntity;
-
 import java.io.IOException;
 
 import java8.util.Optional;
@@ -15,7 +13,7 @@ public interface PreferenceEntity<T> {
 
     Optional<T> read();
 
-    NoveoRxPreferenceEntity<T> rx();
+    RxPreferenceEntity<T> rx();
 
     ValueProvider<T> provider();
 
