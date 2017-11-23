@@ -2,16 +2,18 @@ package com.noveogroup.preferenceentity;
 
 import android.content.Context;
 
+import com.noveogroup.preferenceentity.mock.TestSharedPreferences;
+import com.noveogroup.preferenceentity.param.Constants;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static com.noveogroup.preferenceentity.Constants.KEY_STRING;
-import static com.noveogroup.preferenceentity.Constants.VALUE_STRING;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
+@SuppressWarnings("PMD.AvoidFinalLocalVariable")
 public class NoveoPreferenceTest {
     private TestSharedPreferences preferences;
     private Context context;
@@ -30,10 +32,13 @@ public class NoveoPreferenceTest {
         final NoveoPreferences contextFilePrefs = new NoveoPreferences(context, "");
         final NoveoPreferences preferencePrefs = new NoveoPreferences(preferences);
 
-        preferences.edit().putString(KEY_STRING, VALUE_STRING).commit();
+        preferences.edit().putString(Constants.KEY_STRING, Constants.VALUE_STRING).commit();
 
-        assertTrue(contextPrefs.getString(KEY_STRING, "").read().isPresent());
-        assertTrue(contextFilePrefs.getString(KEY_STRING).read().isPresent());
-        assertTrue(preferencePrefs.getString(KEY_STRING).read().isPresent());
+        assertTrue("NoveoPreferences uses preferences",
+                contextPrefs.getString(Constants.KEY_STRING, "").read().isPresent());
+        assertTrue("NoveoPreferences uses preferences",
+                contextFilePrefs.getString(Constants.KEY_STRING).read().isPresent());
+        assertTrue("NoveoPreferences uses preferences",
+                preferencePrefs.getString(Constants.KEY_STRING).read().isPresent());
     }
 }

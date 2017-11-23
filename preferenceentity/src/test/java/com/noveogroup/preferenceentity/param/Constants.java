@@ -1,7 +1,7 @@
-package com.noveogroup.preferenceentity;
+package com.noveogroup.preferenceentity.param;
 
 @SuppressWarnings("WeakerAccess")
-final class Constants {
+public final class Constants {
 
     public static final long VALUE_LONG = 10L;
     public static final String VALUE_STRING = "string";
@@ -14,4 +14,7 @@ final class Constants {
     public static final String KEY_STRING = "string";
     public static final String KEY_INT = "int";
     public static final String KEY_FLOAT = "float";
+
+    private Constants() {
+    }
 }

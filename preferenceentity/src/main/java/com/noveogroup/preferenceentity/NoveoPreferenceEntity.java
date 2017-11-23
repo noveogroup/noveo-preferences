@@ -42,7 +42,7 @@ public class NoveoPreferenceEntity<T> implements PreferenceEntity<T> {
     }
 
     private static void log(final String key, final String message, final Object... args) {
-        if (NoveoPreferences.isDebug()) {
+        if (NoveoPreferences.isDebugEnabled()) {
             LOGGER.debug('(' + key + ')' + ' ' + message, args);
         }
     }
@@ -85,7 +85,7 @@ public class NoveoPreferenceEntity<T> implements PreferenceEntity<T> {
 
     private void logOrThrow(final boolean log, final String message, final Object... args) throws IOException {
         if (log) {
-            log(key, "removed", args);
+            log(key, message, args);
         } else {
             throw new IOException("Something went really wrong. SharedPreferences.editor.commit() returns false. Check Your FS");
         }

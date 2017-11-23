@@ -11,7 +11,7 @@ import java8.util.Optional;
 public class NoveoRxPreferenceEntity<T> implements RxPreferenceEntity<T> {
 
     private final PreferenceEntity<T> preferenceEntity;
-    private RxValueProvider<T> provider;
+    private RxValueProvider<T> rxProvider;
 
     NoveoRxPreferenceEntity(final PreferenceEntity<T> preferenceEntity) {
         this.preferenceEntity = preferenceEntity;
@@ -34,9 +34,9 @@ public class NoveoRxPreferenceEntity<T> implements RxPreferenceEntity<T> {
 
     @Override
     public RxValueProvider<T> provider() {
-        if (provider == null) {
-            provider = new NoveoRxValueProvider<>(preferenceEntity.provider());
+        if (rxProvider == null) {
+            rxProvider = new NoveoRxValueProvider<>(preferenceEntity.provider());
         }
-        return provider;
+        return rxProvider;
     }
 }

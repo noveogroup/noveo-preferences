@@ -19,6 +19,13 @@ task javadoc(type: Javadoc) {
     failOnError false
 }
 
+//javadoc classpath with library dependencies
+afterEvaluate {
+    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+        variant.javaCompiler.classpath.files
+    })
+}
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir

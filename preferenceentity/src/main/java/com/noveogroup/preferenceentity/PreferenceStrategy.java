@@ -83,7 +83,7 @@ public class PreferenceStrategy<T> {
         boolean compare(String storedKey, String entityKey);
     }
 
-    @SuppressWarnings("SameParameterValue")
+    @SuppressWarnings({"SameParameterValue", "PMD.AvoidFieldNameMatchingMethodName"})
     public static class Builder<T> {
         private SetAction<T> setAction;
         private GetAction<T> getAction;

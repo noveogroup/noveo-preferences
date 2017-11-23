@@ -26,7 +26,7 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError true
         checkAllWarnings true
         disable "AllowBackup"
         disable "ContentDescription"
@@ -59,6 +59,13 @@ dependencies {
     implementation libraries.rxJava2
     implementation libraries.slf4j
 
+}
+
+check {
+    abortOnError true
+    checkstyle { config project.rootProject.file('config/checkstyle.xml').absolutePath }
+    pmd { config project.rootProject.file('config/pmd.xml').absolutePath }
+    findbugs { skip true }
 }
 
 def publishProperties = new Properties()

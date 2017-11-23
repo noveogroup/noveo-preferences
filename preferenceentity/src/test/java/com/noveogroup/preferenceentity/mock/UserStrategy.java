@@ -1,9 +1,14 @@
-package com.noveogroup.preferenceentity;
+package com.noveogroup.preferenceentity.mock;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.noveogroup.preferenceentity.PreferenceStrategy;
+
 public class UserStrategy extends PreferenceStrategy<User> {
+
+    public static final String POSTFIX_AGE = ".int";
+    public static final String POSTFIX_NAME = ".string";
 
     public UserStrategy() {
         super(
@@ -18,20 +23,20 @@ public class UserStrategy extends PreferenceStrategy<User> {
     @NonNull
     private static KeyFilter createKeyComparator() {
         return (String storedKey, String entityKey) -> {
-            final String fieldIntKey = entityKey + ".int";
-            final String fieldStringKey = entityKey + ".string";
+            final String fieldIntKey = entityKey + POSTFIX_AGE;
+            final String fieldStringKey = entityKey + POSTFIX_NAME;
 
-            return entityKey.equals(storedKey) ||
-                    fieldIntKey.equals(storedKey) ||
-                    fieldStringKey.equals(storedKey);
+            return entityKey.equals(storedKey)
+                    || fieldIntKey.equals(storedKey)
+                    || fieldStringKey.equals(storedKey);
         };
     }
 
     @NonNull
     private static RemoveAction createRemoveAction() {
         return (SharedPreferences.Editor editor, String key) -> {
-            final String fieldIntKey = key + ".int";
-            final String fieldStringKey = key + ".string";
+            final String fieldIntKey = key + POSTFIX_AGE;
+            final String fieldStringKey = key + POSTFIX_NAME;
 
             editor.remove(key)
                     .remove(fieldIntKey)
@@ -42,8 +47,8 @@ public class UserStrategy extends PreferenceStrategy<User> {
     @NonNull
     private static GetAction<User> createGetAction() {
         return (preferences, key, value) -> {
-            final String fieldIntKey = key + ".int";
-            final String fieldStringKey = key + ".string";
+            final String fieldIntKey = key + POSTFIX_AGE;
+            final String fieldStringKey = key + POSTFIX_NAME;
 
             final boolean presented = preferences.getBoolean(key, false);
             if (presented) {
@@ -62,8 +67,8 @@ public class UserStrategy extends PreferenceStrategy<User> {
             final boolean presented = value != null;
             editor.putBoolean(key, presented);
 
-            final String fieldIntKey = key + ".int";
-            final String fieldStringKey = key + ".string";
+            final String fieldIntKey = key + POSTFIX_AGE;
+            final String fieldStringKey = key + POSTFIX_NAME;
 
             if (presented) {
                 editor.putInt(fieldIntKey, value.getAge());

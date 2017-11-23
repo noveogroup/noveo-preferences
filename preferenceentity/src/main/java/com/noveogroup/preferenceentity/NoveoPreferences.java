@@ -12,12 +12,12 @@ import java.util.Map;
 @SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
 public class NoveoPreferences {
 
-    private static boolean debug = false;
+    private static boolean debug;
     private final SharedPreferences preferences;
 
     /**
      * Create SharedPreferences wrapper.
-     * <p>
+     *
      * <p>Uses default application shared preferences with package name.</p>
      *
      * @param context to get access to SharedPreferences.
@@ -28,10 +28,11 @@ public class NoveoPreferences {
 
     /**
      * Create SharedPreferences wrapper.
-     * <p>
+     *
      * <p>Uses custom shared preferences file.</p>
      *
      * @param context to get access to SharedPreferences.
+     * @param fileName postfix for preference file name.
      */
     public NoveoPreferences(final Context context, final String fileName) {
         preferences = context.getSharedPreferences(context.getPackageName() + '.' + fileName, Context.MODE_PRIVATE);
@@ -39,7 +40,7 @@ public class NoveoPreferences {
 
     /**
      * Create SharedPreferences wrapper.
-     * <p>
+     *
      * <p>Use these exact shared preferences.</p>
      *
      * @param preferences to be wrapped.
@@ -48,7 +49,7 @@ public class NoveoPreferences {
         this.preferences = preferences;
     }
 
-    public static boolean isDebug() {
+    public static boolean isDebugEnabled() {
         return debug;
     }
 

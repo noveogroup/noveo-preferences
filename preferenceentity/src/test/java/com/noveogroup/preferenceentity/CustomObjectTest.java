@@ -3,6 +3,9 @@ package com.noveogroup.preferenceentity;
 import android.content.SharedPreferences;
 
 import com.noveogroup.preferenceentity.api.PreferenceEntity;
+import com.noveogroup.preferenceentity.mock.TestSharedPreferences;
+import com.noveogroup.preferenceentity.mock.User;
+import com.noveogroup.preferenceentity.mock.UserStrategy;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +14,8 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-public class ObjectTest {
+@SuppressWarnings("PMD.AvoidFinalLocalVariable")
+public class CustomObjectTest {
 
     private static final String KEY_USER = "user";
     private static final User DEFAULT_USER_VALUE = new User("default", 100);
@@ -28,20 +32,20 @@ public class ObjectTest {
 
     @Test
     public void object() {
-        assertEquals(preferences.getAll().size(), 0);
+        assertEquals("initial set is empty", preferences.getAll().size(), 0);
 
         final PreferenceEntity<User> userEntity = noveoPreferencesWrapper.getObject(KEY_USER, new UserStrategy(), DEFAULT_USER_VALUE);
-        assertEquals(userEntity.read().get(), DEFAULT_USER_VALUE);
-        assertEquals(preferences.getAll().size(), 0);
+        assertEquals("no user - got default value", userEntity.read().get(), DEFAULT_USER_VALUE);
+        assertEquals("after 1 get there are still no records in preferences", preferences.getAll().size(), 0);
 
         final User newUser = new User("new", -100);
         userEntity.rx().save(newUser).subscribe();
-        assertEquals(userEntity.read().get(), newUser);
-        assertEquals(preferences.getAll().size(), 3);
+        assertEquals("saved user is the same as get after", userEntity.read().get(), newUser);
+        assertEquals("1 user stores 3 keys (according to custom strategy)", preferences.getAll().size(), 3);
 
         userEntity.rx().remove().subscribe();
-        assertEquals(userEntity.read().get(), DEFAULT_USER_VALUE);
-        assertEquals(preferences.getAll().size(), 0);
+        assertEquals("after remove user returns default value", userEntity.read().get(), DEFAULT_USER_VALUE);
+        assertEquals("after remove preferences contains 0 records", preferences.getAll().size(), 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -50,7 +54,7 @@ public class ObjectTest {
                 .keyFilter(PreferenceStrategy.KeyFilter.EQUALS)
                 .canBeNull(true)
                 .build();
-        final PreferenceEntity<Object> emptyPreference = noveoPreferencesWrapper.getObject("empty", emptyStrategy, new ObjectTest());
+        final PreferenceEntity<Object> emptyPreference = noveoPreferencesWrapper.getObject("empty", emptyStrategy, new CustomObjectTest());
 
         emptyPreference.read();
     }
@@ -60,7 +64,7 @@ public class ObjectTest {
         final PreferenceStrategy<Object> emptyStrategy = PreferenceStrategy.builder().build();
         final PreferenceEntity<Object> emptyPreference = noveoPreferencesWrapper.getObject("empty", emptyStrategy);
 
-        emptyPreference.save(new ObjectTest());
+        emptyPreference.save(new CustomObjectTest());
     }
 
     @Test(expected = UnsupportedOperationException.class)

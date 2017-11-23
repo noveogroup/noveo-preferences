@@ -4,12 +4,18 @@ import android.content.SharedPreferences;
 
 import io.reactivex.functions.Consumer;
 
-@SuppressWarnings("unchecked")
-public class Utils {
+@SuppressWarnings({"unchecked", "WeakerAccess"})
+public final class Utils {
+
+    private Utils() {
+        //do nothing
+    }
+
     static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
         throw (E) e;
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     static boolean editPreferences(final SharedPreferences preferences, final Consumer<SharedPreferences.Editor> action) {
         try {
             final SharedPreferences.Editor editor = preferences.edit();

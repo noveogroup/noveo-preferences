@@ -34,6 +34,7 @@ public class NoveoValueProvider<T> implements ValueProvider<T> {
         preferences.registerOnSharedPreferenceChangeListener(listener);
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private void notifyListener(final Consumer<Optional<T>> changeListener, final String changedKey) {
         try {
             if (filter.apply(changedKey)) {

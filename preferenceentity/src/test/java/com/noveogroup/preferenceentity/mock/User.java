@@ -1,6 +1,8 @@
-package com.noveogroup.preferenceentity;
+package com.noveogroup.preferenceentity.mock;
 
+@SuppressWarnings("WeakerAccess")
 public class User {
+    public static final int HASH_CONSTANT = 31;
     private final String name;
     private final int age;
 
@@ -19,19 +21,21 @@ public class User {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         final User user = (User) o;
-
-        if (age != user.age) return false;
-        return name != null ? name.equals(user.name) : user.name == null;
+        return age == user.age && (name != null ? name.equals(user.name) : user.name == null);
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + age;
+        result = HASH_CONSTANT * result + age;
         return result;
     }
 }
