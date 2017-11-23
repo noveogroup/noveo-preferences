@@ -48,7 +48,8 @@ dependencies {
     /* Moxy */
     implementation libraries.moxy
     implementation libraries.moxyCompat
-    implementation project(":preferenceentity")/*"com.noveogroup:preferenceentity:0.0.1"*/
+//    implementation project(':preferences')
+    implementation "com.noveogroup:preferences:0.0.1"
 
     annotationProcessor libraries.moxyCompiler
 }

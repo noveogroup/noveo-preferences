@@ -1,1 +1,1 @@
-include ':preferenceentity', ':sample'
+include ':preferences', ':sample'

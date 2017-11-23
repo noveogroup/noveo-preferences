@@ -16,6 +16,9 @@ import com.arellomobile.mvp.presenter.PresenterType;
 import com.noveogroup.preferences.sample.R;
 import com.noveogroup.preferences.sample.data.User;
 
+/**
+ * Created by avaytsekhovskiy on 23/11/2017.
+ */
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @InjectPresenter(type = PresenterType.LOCAL)
@@ -28,13 +31,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     private TextView userLabel;
 
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = (buttonView, isChecked) -> mainPresenter.saveEnabled(isChecked);
-    private TextWatcher userNameWatcher = new SimpleWatcher() {
+    private TextWatcher userNameWatcher = new SupportWatcher() {
         @Override
         public void afterTextChanged(final Editable text) {
             mainPresenter.saveUser(String.valueOf(text));
         }
     };
-    private TextWatcher userAgeWatcher = new SimpleWatcher() {
+    private TextWatcher userAgeWatcher = new SupportWatcher() {
         @Override
         public void afterTextChanged(final Editable text) {
             mainPresenter.saveUser(parseAge(text));
@@ -108,6 +111,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         if (!TextUtils.equals(userText.getText(), name)) {
             userText.removeTextChangedListener(userNameWatcher);
             userText.setText(name);
+            userText.setSelection(userText.getText().length());
             userText.addTextChangedListener(userNameWatcher);
         }
 

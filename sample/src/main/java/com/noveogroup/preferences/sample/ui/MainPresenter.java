@@ -9,11 +9,14 @@ import com.noveogroup.preferences.sample.data.User;
 import io.reactivex.disposables.CompositeDisposable;
 import java8.util.Optional;
 
+/**
+ * Created by avaytsekhovskiy on 23/11/2017.
+ */
 @SuppressWarnings("NumberEquality")
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
-    private final CommonPreferences preferences = SampleApplication.COMMON_PREFERENCES;
+    private final CommonPreferences preferences = SampleApplication.commonPreferences;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private Optional<User> user = Optional.empty();
 

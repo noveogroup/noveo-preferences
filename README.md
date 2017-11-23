@@ -1,2 +1,1 @@
-# Noveo Preferences Entity
-
+# Noveo Preferences
