@@ -14,9 +14,9 @@ class DeveloperPreferences {
     RxPreference<Boolean> stethoRxPref;
 
     DeveloperPreferences(Context context) {
-        NoveoPreferences drawerPreferences = new NoveoPreferences(context, "developers");
+        NoveoPreferences noveoPreferences = new NoveoPreferences(context, "developers");
         
-        stethoPref = drawerPreferences.getBoolean("developer.key_stetho");
+        stethoPref = noveoPreferences.getBoolean("stetho");
         stethoRxPref = stethoPref.rx();
     }
 }
@@ -36,13 +36,13 @@ Observe changes with callback listener
 
 ```java
 void observe() {
-    listener = canaryPref.provider().addListener(optionalValue -> optionalValue.ifPresentedOrElse(
+    listener = stethoPref.provider().addListener(optionalValue -> optionalValue.ifPresentedOrElse(
         value -> //handle value changed
         () -> //handle value removed
     ));
     
     //stop watching
-    canaryPref.provider().removeListener(listener);
+    stethoPref.provider().removeListener(listener);
 }
 
 ```
