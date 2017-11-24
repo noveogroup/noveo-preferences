@@ -4,13 +4,12 @@ import android.content.SharedPreferences;
 
 import com.noveogroup.preferences.api.Preference;
 import com.noveogroup.preferences.api.PreferenceProvider;
+import com.noveogroup.preferences.guava.Optional;
+import com.noveogroup.preferences.lambda.Consumer;
+import com.noveogroup.preferences.lambda.Function;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import java8.util.Optional;
 
 /**
  * Created by avaytsekhovskiy on 23/11/2017.

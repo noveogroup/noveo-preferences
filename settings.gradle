@@ -1,1 +1,1 @@
-include ':preferences', ':sample'
+include ':preferences', ':preferences-rx1', ':preferences-rx2', ':sample'

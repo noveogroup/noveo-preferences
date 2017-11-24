@@ -4,11 +4,9 @@ import android.content.SharedPreferences;
 
 import com.noveogroup.preferences.api.Preference;
 import com.noveogroup.preferences.api.PreferenceProvider;
-import com.noveogroup.preferences.api.RxPreference;
+import com.noveogroup.preferences.guava.Optional;
 
 import java.util.Map;
-
-import java8.util.Optional;
 
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
@@ -17,7 +15,6 @@ import java8.util.Optional;
 class AllPreference extends LogPreference implements Preference<Map<String, ?>> {
 
     private final SharedPreferences preferences;
-    private RxPreference<Map<String, ?>> rxPreference;
     private PreferenceProvider<Map<String, ?>> preferenceProvider;
 
     AllPreference(final SharedPreferences preferences) {
@@ -33,11 +30,14 @@ class AllPreference extends LogPreference implements Preference<Map<String, ?>> 
     @Override
     public void remove() {
         // 1. Remove VALUES by keys to invoke observer notifications.
-        boolean result = Utils.editPreferences(preferences, editor -> read().ifPresent(map -> {
-            for (final String key : map.keySet()) {
-                editor.remove(key);
+        boolean result = Utils.editPreferences(preferences, editor -> {
+            final Optional<Map<String, ?>> optional = read();
+            if (optional.isPresent()) {
+                for (final String key : optional.get().keySet()) {
+                    editor.remove(key);
+                }
             }
-        }));
+        });
 
         // 2. Remove KEYS (won't notify observers)
         result &= Utils.editPreferences(preferences, SharedPreferences.Editor::clear);
@@ -48,15 +48,7 @@ class AllPreference extends LogPreference implements Preference<Map<String, ?>> 
 
     @Override
     public Optional<Map<String, ?>> read() {
-        return Optional.ofNullable(preferences.getAll());
-    }
-
-    @Override
-    public RxPreference<Map<String, ?>> rx() {
-        if (rxPreference == null) {
-            rxPreference = new NoveoRxPreference<>(this);
-        }
-        return rxPreference;
+        return Optional.fromNullable(preferences.getAll());
     }
 
     @Override

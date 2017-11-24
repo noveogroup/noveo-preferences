@@ -2,100 +2,130 @@
 
 Android SharedPreferences wrapper for easy Read/Write/Remove operations.
 
-Integrated with [RxJava2](https://github.com/ReactiveX/RxJava) & [java8 Stream Support](https://github.com/streamsupport/streamsupport)
++ [RxJava1 / RxJava2](https://github.com/ReactiveX/RxJava) integration.
 
 ## How to use
 
-Create your Preferences API
+#### Create your Preferences API
+
+With `NoveoRxPreferences`
 
 ```java
-class DeveloperPreferences {
-    Preference<Boolean> stethoPref;
-    RxPreference<Boolean> stethoRxPref;
+class RxPreferences {
+    RxPreference<Boolean> developerModeRxPref;
 
-    DeveloperPreferences(Context context) {
-        NoveoPreferences noveoPreferences = new NoveoPreferences(context, "developers");
+    RxPreferences(Context context) {
+        NoveoRxPreferences noveoPreferences = new NoveoRxPreferences(context, "developers");
         
-        stethoPref = noveoPreferences.getBoolean("stetho");
-        stethoRxPref = stethoPref.rx();
+        this.developerModeRxPref = noveoRxPreferences.getBoolean("developerMode");
     }
 }
 ```
 
-Use it synchronously
+Or use synchronous `NoveoPreferences`
 
 ```java
-void readSaveRemove() throws IOException {
-    boolean value = stethoPref.read().orElse(false);
-    stethoPref.save(true);
-    stethoPref.remove();
+class SynchronousPreferences {
+    Preference<Boolean> developerModePref;
+
+    SynchronousPreferences(Context context) {
+        NoveoPreferences noveoPreferences = new NoveoPreferences(context, "developers");
+        
+        this.developerModePref = noveoPreferences.getBoolean("developerMode");
+    }
 }
 ```
 
-Observe changes with callback listener
+#### Use RxPreferences
+
+Operations: `read()`, `save(T value)`, `remove()` 
 
 ```java
-void observe() {
-    listener = stethoPref.provider().addListener(optionalValue -> optionalValue.ifPresentedOrElse(
-        value -> //handle value changed
-        () -> //handle value removed
-    ));
-    
-    //stop watching
-    stethoPref.provider().removeListener(listener);
-}
-
+Single<Optional<Boolean>> single = developerModeRxPref.read();
+Completable completable = developerModeRxPref.save(true);
+Completable completable = developerModeRxPref.remove();
 ```
 
-### ..with Rx
-
-Or use rx asynchronous API. 
+and Observe changes
 
 ```java
-void read() {
-    Single<Optional<Boolean>> single = stethoRxPref.read();
-    Completable completable = stethoRxPref.save(true);
-    Completable completable = stethoRxPref.remove();
-}
+Disposable disposable = developerModeRxPref.provider().observe(
+    value -> //handle onNext
+);
+
+//start watching
+Floable<Optional<Boolean>> flowable = developerModeRxPref.provider().asFlowable();
+
+//stop watching
+disposable.dispose(); 
 ```
 
-Observe changes
+#### Or use synchronously API
 
 ```java
-void observe() {
-    Disposable disposable = stethoRxPref.provider().observe(
-        value -> //handle onNext
-    );
-    
-    Floable<Optional<Boolean>> flowable = stethoRxPref.provider().asFlowable();
-    
-    disposable.dispose(); //stop watching
-}
+boolean value = developerModePref.read().or(false);
+developerModePref.save(true);
+developerModePref.remove();
+```
+
+```java
+//start watching
+listener = developerModePref.provider().addListener(optional -> optional.apply(
+    value -> //handle value changed
+    () -> //handle value removed
+));
+
+//stop watching
+developerModePref.provider().removeListener(listener);
+```
+
+### Bridge between Rx & Synchronous versions
+
+Generally you should use rx preferences. If you need to use them as sync - use toBlocking().
+
+```java
+/* to sync */ Preference developerModePref = developerModeRxPref.toBlocking();
+/* ro  rx  */ RxPreference developerModeRxPref = RxPreference.wrap(developerModePref);
+
+/* to sync */ NoveoPreferences preferences = rxPreferences.toBlocking();
+/* ro  rx  */ NoveoRxPreferences rxPreferences = new NoveoRxPreferences(preferences);
 ```
 
 ## How to add
 
-Add these dependencies to your build.gradle:
+Add maven repository to your project (jCenter/mavenCentral publication coming soon.)
 
-```!groovy
+```groovy
 repositories {
     maven {
         url "http://dl.bintray.com/noveo-nsk/maven"
     }
 }
-
-dependencies {
-    implementation 'com.noveogroup:preferences:0.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.1'
-    implementation 'net.sourceforge.streamsupport:streamsupport:1.5.6'
-}
 ```
 
-jCenter/mavenCentral publication coming soon.
+#### Dependencies
+
+| Description | Dependencies |
+| :--- | :--- |
+| Synchronous API | `implementation 'com.noveogroup:preferences:0.0.2'` | 
+| RxJava1 Extension | `implementation 'com.noveogroup:preferences:0.0.2'`<br>`implementation 'com.noveogroup:preferences-rx1:0.0.2`<br>`implementation 'io.reactivex:rxjava:1.3.6'` | 
+| RxJava2 Extension | `implementation 'com.noveogroup:preferences:0.0.2'`<br>`implementation 'com.noveogroup:preferences-rx2:0.0.2`<br>`implementation 'io.reactivex.rxjava2:rxjava:2.1.1'` | 
+
+## Guava Optional Extensions
+
+Project uses `Optional` class extracted from popular [Guava](https://github.com/google/guava) library, extended with more functional methods. 
+
++ [`Optional` Official Guava Documentation](https://github.com/google/guava/wiki/UsingAndAvoidingNullExplained#optional)
+
+#### New Optional API:
+
++ `Optional.applyPresented(Consumer presented)` - invoke lambda if value presented.
++ `Optional.applyAbsent(Runnable absent)` - invoke lambda if value absent.
++ `Optional.apply(Consumer presented, Runnable absent)` - invoke `presented` if value presented, invoke `absent` otherwise. 
 
 ## License
 
-```!text
+```text
 Copyright (c) 2017 Noveo Group
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

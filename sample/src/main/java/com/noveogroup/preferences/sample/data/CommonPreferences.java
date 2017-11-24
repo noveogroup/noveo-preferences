@@ -2,8 +2,8 @@ package com.noveogroup.preferences.sample.data;
 
 import android.content.Context;
 
-import com.noveogroup.preferences.NoveoPreferences;
-import com.noveogroup.preferences.api.Preference;
+import com.noveogroup.preferences.NoveoRxPreferences;
+import com.noveogroup.preferences.api.RxPreference;
 
 import java.util.Map;
 
@@ -15,13 +15,13 @@ public class CommonPreferences {
 
     /* Keep strong references to entity.
      * Otherwise observers/listeners may be lost (due to SharePreferences implementation) */
-    public final Preference<Boolean> enabled;
-    public final Preference<User> user;
-    public final Preference<Map<String, ?>> all;
+    public final RxPreference<Boolean> enabled;
+    public final RxPreference<User> user;
+    public final RxPreference<Map<String, ?>> all;
 
     // Depends on Context.
     public CommonPreferences(final Context context) {
-        final NoveoPreferences preferences = new NoveoPreferences(context);
+        final NoveoRxPreferences preferences = new NoveoRxPreferences(context);
         all = preferences.getAll();
 
         enabled = preferences.getBoolean("boolean", false);

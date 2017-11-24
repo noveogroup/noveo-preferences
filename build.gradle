@@ -1,6 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply from: "dependencies.gradle"
-apply from: "build-versions.gradle"
 
 buildscript {
     apply from: "dependencies.gradle"
@@ -14,9 +13,6 @@ buildscript {
         classpath gradlePlugins.retrolambda
         classpath gradlePlugins.lombok
 
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -26,10 +22,22 @@ buildscript {
 }
 
 allprojects {
+    version = VERSION_NAME
+    group = GROUP
+
     repositories {
+        maven {
+            url "http://dl.bintray.com/noveo-nsk/maven"
+        }
         jcenter()
         mavenCentral()
         google()
+    }
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
     }
 }
 

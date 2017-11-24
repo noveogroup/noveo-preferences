@@ -39,11 +39,11 @@ public class CustomObjectTest {
         assertEquals("after 1 get there are still no records in preferences", preferences.getAll().size(), 0);
 
         final User newUser = new User("new", -100);
-        userEntity.rx().save(newUser).subscribe();
+        userEntity.save(newUser);
         assertEquals("saved user is the same as get after", userEntity.read().get(), newUser);
         assertEquals("1 user stores 3 keys (according to custom strategy)", preferences.getAll().size(), 3);
 
-        userEntity.rx().remove().subscribe();
+        userEntity.remove();
         assertEquals("after remove user returns default value", userEntity.read().get(), DEFAULT_USER_VALUE);
         assertEquals("after remove preferences contains 0 records", preferences.getAll().size(), 0);
     }

@@ -23,11 +23,30 @@ public class User {
     private String name;
     private long age;
 
-    @SuppressWarnings("WeakerAccess")
-    public static class UserStrategy extends PreferenceStrategy<User> {
+    static class UserKeys {
 
         private static final String POSTFIX_AGE = ".int";
         private static final String POSTFIX_NAME = ".string";
+
+        final String key;
+        final String nameKey;
+        final String ageKey;
+
+        UserKeys(final String key) {
+            this.key = key;
+            this.ageKey = key + POSTFIX_AGE;
+            this.nameKey = key + POSTFIX_NAME;
+        }
+
+        boolean keyEquals(final String storedKey) {
+            return key.equals(storedKey)
+                    || ageKey.equals(storedKey)
+                    || nameKey.equals(storedKey);
+        }
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public static final class UserStrategy extends PreferenceStrategy<User> {
 
         private UserStrategy() {
             super(
@@ -41,40 +60,30 @@ public class User {
 
         @NonNull
         private static KeyFilter createKeyComparator() {
-            return (String storedKey, String entityKey) -> {
-                final String fieldIntKey = entityKey + POSTFIX_AGE;
-                final String fieldStringKey = entityKey + POSTFIX_NAME;
-
-                return entityKey.equals(storedKey)
-                        || fieldIntKey.equals(storedKey)
-                        || fieldStringKey.equals(storedKey);
-            };
+            return (String storedKey, String entityKey) ->
+                    new UserKeys(entityKey).keyEquals(storedKey);
         }
 
         @NonNull
         private static RemoveAction createRemoveAction() {
             return (SharedPreferences.Editor editor, String key) -> {
-                final String fieldIntKey = key + POSTFIX_AGE;
-                final String fieldStringKey = key + POSTFIX_NAME;
-
+                final UserKeys userKeys = new UserKeys(key);
                 editor.remove(key)
-                        .remove(fieldIntKey)
-                        .remove(fieldStringKey);
+                        .remove(userKeys.ageKey)
+                        .remove(userKeys.nameKey);
             };
         }
 
         @NonNull
         private static GetAction<User> createGetAction() {
             return (preferences, key, value) -> {
-                final String fieldIntKey = key + POSTFIX_AGE;
-                final String fieldStringKey = key + POSTFIX_NAME;
-
+                final UserKeys userKeys = new UserKeys(key);
                 final boolean presented = preferences.getBoolean(key, false);
                 if (presented) {
                     final boolean defaultNotNull = value != null;
                     return new User(
-                            preferences.getString(fieldStringKey, defaultNotNull ? value.getName() : null),
-                            preferences.getLong(fieldIntKey, defaultNotNull ? value.getAge() : 0));
+                            preferences.getString(userKeys.nameKey, defaultNotNull ? value.getName() : null),
+                            preferences.getLong(userKeys.ageKey, defaultNotNull ? value.getAge() : 0));
                 }
                 return value;
             };
@@ -85,16 +94,14 @@ public class User {
             return (editor, key, value) -> {
                 final boolean presented = value != null;
                 editor.putBoolean(key, presented);
-
-                final String fieldIntKey = key + POSTFIX_AGE;
-                final String fieldStringKey = key + POSTFIX_NAME;
+                final UserKeys userKeys = new UserKeys(key);
 
                 if (presented) {
-                    editor.putLong(fieldIntKey, value.getAge());
-                    editor.putString(fieldStringKey, value.getName());
+                    editor.putLong(userKeys.ageKey, value.getAge());
+                    editor.putString(userKeys.nameKey, value.getName());
                 } else {
-                    editor.remove(fieldIntKey);
-                    editor.remove(fieldStringKey);
+                    editor.remove(userKeys.ageKey);
+                    editor.remove(userKeys.nameKey);
                 }
             };
         }

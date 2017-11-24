@@ -5,9 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.noveogroup.preferences.api.Preference;
 import com.noveogroup.preferences.api.PreferenceProvider;
-
-import io.reactivex.functions.Function;
-import java8.util.Optional;
+import com.noveogroup.preferences.guava.Optional;
+import com.noveogroup.preferences.lambda.Function;
 
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
@@ -21,8 +20,6 @@ class ItemPreference<T> extends LogPreference implements Preference<T> {
 
     @Nullable
     private final T defaultValue;
-    @Nullable
-    private NoveoRxPreference<T> rxEntity;
     @Nullable
     private PreferenceProvider<T> providerDelegate;
 
@@ -44,7 +41,7 @@ class ItemPreference<T> extends LogPreference implements Preference<T> {
     @Override
     public Optional<T> read() {
         if (strategy.canBeNull) {
-            return Optional.ofNullable(strategy.get(preferences, key, defaultValue));
+            return Optional.fromNullable(strategy.get(preferences, key, defaultValue));
         }
         return Optional.of(strategy.get(preferences, key, defaultValue));
     }
@@ -62,14 +59,6 @@ class ItemPreference<T> extends LogPreference implements Preference<T> {
         logOrThrowSneaky(
                 Utils.editPreferences(preferences, editor -> strategy.set(editor, key, value)),
                 "changed to {}", value);
-    }
-
-    @Override
-    public NoveoRxPreference<T> rx() {
-        if (rxEntity == null) {
-            rxEntity = new NoveoRxPreference<>(this);
-        }
-        return rxEntity;
     }
 
     @Override

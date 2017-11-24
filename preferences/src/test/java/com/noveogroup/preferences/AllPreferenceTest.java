@@ -1,7 +1,8 @@
 package com.noveogroup.preferences;
 
 import com.noveogroup.preferences.api.Preference;
-import com.noveogroup.preferences.api.RxPreference;
+import com.noveogroup.preferences.guava.Optional;
+import com.noveogroup.preferences.lambda.Consumer;
 import com.noveogroup.preferences.mock.TestSharedPreferences;
 import com.noveogroup.preferences.param.Constants;
 
@@ -11,10 +12,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import java8.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -81,34 +78,13 @@ public class AllPreferenceTest {
     }
 
     @Test
-    public void rx() throws IOException {
-        final Preference<Map<String, ?>> all = noveoPreferencesWrapper.getAll();
-        final RxPreference<Map<String, ?>> allRx = all.rx();
-
-        assertEquals("rx.get same as simple get",
-                all.read().get(), allRx.read().blockingGet().get());
-
-        allRx.remove().subscribe();
-        assertEquals("rx.get same as simple get",
-                all.read().get(), allRx.read().blockingGet().get());
-
-        allRx.save(new HashMap<>()).subscribe(
-                () -> {
-                },
-                throwable -> assertTrue("rx on save returns error",
-                        throwable instanceof UnsupportedOperationException));
-    }
-
-    @Test
     public void provider() throws IOException {
-        Disposable disposable;
         final long newValue = 5L;
         final String additionalKey = "new";
-        final Consumer<Optional<Map<String, ?>>> consumerFive = mapOptional -> {
-            assertEquals("preferences set is 5 items",
-                    mapOptional.get().size(),
-                    preferences.getAll().size());
-        };
+        final Consumer<Optional<Map<String, ?>>> consumerFive = mapOptional ->
+                assertEquals("preferences set is 5 items",
+                        mapOptional.get().size(),
+                        preferences.getAll().size());
         final Consumer<Optional<Map<String, ?>>> consumerSix = mapOptional -> {
             assertEquals("preferences set is 6 items",
                     mapOptional.get().size(),
@@ -119,17 +95,13 @@ public class AllPreferenceTest {
 
         final Preference<Map<String, ?>> all = noveoPreferencesWrapper.getAll();
 
-        disposable = all.rx().provider().observe(consumerFive);
         all.provider().addListener(consumerFive);
         noveoPreferencesWrapper.getString(Constants.KEY_STRING).save("another");
         noveoPreferencesWrapper.getLong(Constants.KEY_LONG).save(newValue);
-        disposable.dispose();
         all.provider().removeListener(consumerFive);
 
-        disposable = all.rx().provider().observe(consumerSix);
         all.provider().addListener(consumerSix);
         noveoPreferencesWrapper.getLong(additionalKey).save(newValue);
-        disposable.dispose();
         all.provider().removeListener(consumerSix);
     }
 

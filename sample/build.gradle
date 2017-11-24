@@ -1,11 +1,5 @@
 apply plugin: 'com.android.application'
 
-repositories {
-    maven {
-        url "http://dl.bintray.com/noveo-nsk/maven"
-    }
-}
-
 android {
     compileSdkVersion sdkVersions.compileSdk
     buildToolsVersion sdkVersions.buildTools
@@ -29,16 +23,19 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation libraries.supportAppCompat
+
+    /* Library & Rx */
+    implementation project(":preferences")
+    implementation project(":preferences-rx2")
+    implementation libraries.rxJava2
 
     /* Boilerplate code generation */
     compileOnly libraries.lombok
     annotationProcessor libraries.lombok
-    implementation libraries.streamSupport
 
-    /* Rx */
-    implementation libraries.rxJava2
+    /* Logging */
     implementation libraries.slf4j
     implementation libraries.logbackCore
     implementation(libraries.logbackClassic) {
@@ -48,8 +45,5 @@ dependencies {
     /* Moxy */
     implementation libraries.moxy
     implementation libraries.moxyCompat
-//    implementation project(':preferences')
-    implementation "com.noveogroup:preferences:0.0.1"
-
     annotationProcessor libraries.moxyCompiler
 }

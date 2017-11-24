@@ -2,27 +2,27 @@ package com.noveogroup.preferences;
 
 import android.content.SharedPreferences;
 
-import io.reactivex.functions.Consumer;
+import com.noveogroup.preferences.lambda.Consumer;
 
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
  */
-@SuppressWarnings({"unchecked", "WeakerAccess"})
+@SuppressWarnings({"unchecked", "WeakerAccess", "PMD"})
 final class Utils {
 
     private Utils() {
         throw new UnsupportedOperationException("You can't instantiate Utility classes");
     }
 
-    static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
+    public static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
         throw (E) e;
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    static boolean editPreferences(final SharedPreferences preferences, final Consumer<SharedPreferences.Editor> action) {
+    public static boolean editPreferences(final SharedPreferences preferences, final Consumer<SharedPreferences.Editor> consumer) {
         try {
             final SharedPreferences.Editor editor = preferences.edit();
-            action.accept(editor);
+            consumer.accept(editor);
             return editor.commit();
         } catch (final Exception original) {
             Utils.sneakyThrow(original);

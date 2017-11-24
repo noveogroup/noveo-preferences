@@ -9,6 +9,7 @@ import java.io.IOException;
  * Created by avaytsekhovskiy on 24/11/2017.
  */
 
+@SuppressWarnings("SameParameterValue")
 class LogPreference {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

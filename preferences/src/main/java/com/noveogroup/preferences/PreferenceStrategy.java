@@ -13,8 +13,8 @@ public class PreferenceStrategy<T> {
      * Strategy to serialize/deserialize {@link Boolean} value.
      * <p>uses:</p>
      * <ul>
-     * <li>{@link SharedPreferences.Editor#putBoolean(String, boolean)}</li>
-     * <li>{@link SharedPreferences#getBoolean(String, boolean)}</li>
+     * <li>{@code SharedPreferences.Editor#putBoolean(String, boolean)}</li>
+     * <li>{@code SharedPreferences#getBoolean(String, boolean)}</li>
      * <li>Can't be null</li>
      * </ul>
      */
@@ -28,8 +28,8 @@ public class PreferenceStrategy<T> {
      *
      * <p>uses:</p>
      * <ul>
-     *     <li>{@link SharedPreferences.Editor#putString(String, String)}</li>
-     *     <li>{@link SharedPreferences#getString(String, String)}</li>
+     *     <li>{@code SharedPreferences.Editor#putString(String, String)}</li>
+     *     <li>{@code SharedPreferences#getString(String, String)}</li>
      *     <li>Nullable</li>
      * </ul>
      */
@@ -44,8 +44,8 @@ public class PreferenceStrategy<T> {
      *
      * <p>uses:</p>
      * <ul>
-     *     <li>{@link SharedPreferences.Editor#putFloat(String, float)}</li>
-     *     <li>{@link SharedPreferences#getFloat(String, float)}</li>
+     *     <li>{@code SharedPreferences.Editor#putFloat(String, float)}</li>
+     *     <li>{@code SharedPreferences#getFloat(String, float)}</li>
      *     <li>Can't be null</li>
      * </ul>
      */
@@ -59,8 +59,8 @@ public class PreferenceStrategy<T> {
      *
      * <p>uses:</p>
      * <ul>
-     *     <li>{@link SharedPreferences.Editor#putInt(String, int)}</li>
-     *     <li>{@link SharedPreferences#getInt(String, int)}</li>
+     *     <li>{@code SharedPreferences.Editor#putInt(String, int)}</li>
+     *     <li>{@code SharedPreferences#getInt(String, int)}</li>
      *     <li>Can't be null</li>
      * </ul>
      */
@@ -74,8 +74,8 @@ public class PreferenceStrategy<T> {
      *
      * <p>uses:</p>
      * <ul>
-     *     <li>{@link SharedPreferences.Editor#putLong(String, long)}</li>
-     *     <li>{@link SharedPreferences#getLong(String, long)}</li>
+     *     <li>{@code SharedPreferences.Editor#putLong(String, long)}</li>
+     *     <li>{@code SharedPreferences#getLong(String, long)}</li>
      *     <li>Can't be null</li>
      * </ul>
      */
@@ -139,8 +139,8 @@ public class PreferenceStrategy<T> {
     }
 
     /**
-     * Serialization Action, put your params into editor.
-     * <p>you can use Gson/Jackson to serialize entity into json-{@link String}</p>
+     * Serialization Consumer, put your params into editor.
+     * <p>you can use JsonParser to serialize entity into json-{@link String}</p>
      * <p>or you can disassemble your object into fields under modified key value</p>
      *
      * @param <T> {@link com.noveogroup.preferences.api.Preference} type.
@@ -150,7 +150,7 @@ public class PreferenceStrategy<T> {
     }
 
     /**
-     * Deserialization Action, get your params from preferences and assemble object.
+     * Deserialization Consumer, get your params from preferences and assemble object.
      * <p>Should be symmetrical to {@link GetAction}</p>
      *
      * @param <T> {@link com.noveogroup.preferences.api.Preference} type.
@@ -160,7 +160,7 @@ public class PreferenceStrategy<T> {
     }
 
     /**
-     * Remove Action, remove your params with editor.
+     * Remove Consumer, remove your params with editor.
      * <p>If you store entity under single key - you can use predefined {@link #REMOVE_BY_KEY} instance.</p>
      */
     public interface RemoveAction {
@@ -170,7 +170,7 @@ public class PreferenceStrategy<T> {
     }
 
     /**
-     * KeyFilter matches keys in {@link SharedPreferences} with your entity.
+     * KeyFilter matches keys in {@code SharedPreferences} with your entity.
      * <p>If you store entity under single key - you can use predefined {@link #EQUALS} instance.</p>
      * <p>KeyFilter required for correct {@link com.noveogroup.preferences.api.PreferenceProvider} matching.</p>
      */

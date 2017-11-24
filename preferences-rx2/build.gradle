@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+apply plugin: "me.tatarka.retrolambda"
+apply plugin: "com.noveogroup.android.check"
+
+android {
+    compileSdkVersion sdkVersions.compileSdk
+    buildToolsVersion sdkVersions.buildTools
+
+    defaultConfig {
+        minSdkVersion sdkVersions.minSdk
+        targetSdkVersion sdkVersions.targetSdk
+        versionCode buildVersions.code
+        versionName buildVersions.name
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError true
+        checkAllWarnings true
+        disable "AllowBackup"
+        disable "ContentDescription"
+        disable "InvalidPackage"
+        disable "SpUsage"
+        disable "IconMissingDensityFolder"
+        disable "SelectableText"
+        disable "RtlCompat", "RtlEnabled", "RtlHardcoded", "RtlSymmetry"
+        disable "MissingPrefix"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    /* test dependencies */
+    testImplementation libraries.junit
+    testImplementation libraries.mockitoCore
+
+    /* Support */
+    implementation libraries.supportAnnotations
+
+    /* Rx */
+    implementation libraries.rxJava2
+
+    /* Logging */
+    implementation libraries.slf4j
+    implementation project(":preferences")
+}
+
+check {
+    abortOnError true
+    checkstyle { config project.rootProject.file('config/checkstyle.xml').absolutePath }
+    pmd { config project.rootProject.file('config/pmd.xml').absolutePath }
+    findbugs { skip true }
+}
+
+apply from: rootProject.file('mvn-push.gradle')

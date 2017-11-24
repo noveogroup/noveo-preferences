@@ -1,11 +1,11 @@
 package com.noveogroup.preferences.api;
 
-import io.reactivex.functions.Consumer;
-import java8.util.Optional;
-
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
  */
+
+import com.noveogroup.preferences.guava.Optional;
+import com.noveogroup.preferences.lambda.Consumer;
 
 /**
  * That class helps you to watch preference changes.

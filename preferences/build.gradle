@@ -2,10 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: "me.tatarka.retrolambda"
 apply plugin: "com.noveogroup.android.check"
 
-apply from: 'config.gradle'
-project.archivesBaseName = ext.artifactId
-description = 'Easy SharedPreferences API with RxJava2 Integration'
-
 android {
     compileSdkVersion sdkVersions.compileSdk
     buildToolsVersion sdkVersions.buildTools
@@ -54,13 +50,8 @@ dependencies {
     /* Support */
     implementation libraries.supportAnnotations
 
-    /* Utilities */
-    implementation libraries.streamSupport
-
-    /* Rx */
-    implementation libraries.rxJava2
+    /* Logging */
     implementation libraries.slf4j
-
 }
 
 check {
@@ -70,5 +61,4 @@ check {
     findbugs { skip true }
 }
 
-apply from: 'androidmaven.gradle'
-apply from: 'bintray.gradle'
+apply from: rootProject.file('mvn-push.gradle')
