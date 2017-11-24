@@ -10,7 +10,6 @@ Create your Preferences API
 
 ```java
 class DeveloperPreferences {
-    
     Preference<Boolean> stethoPref;
     RxPreference<Boolean> stethoRxPref;
 

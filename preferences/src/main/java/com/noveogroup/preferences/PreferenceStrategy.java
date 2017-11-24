@@ -11,7 +11,6 @@ public class PreferenceStrategy<T> {
 
     /**
      * Strategy to serialize/deserialize {@link Boolean} value.
-     * <p>
      * <p>uses:</p>
      * <ul>
      * <li>{@link SharedPreferences.Editor#putBoolean(String, boolean)}</li>
