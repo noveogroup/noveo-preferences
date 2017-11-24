@@ -133,4 +133,10 @@ public class AllPreferenceTest {
         all.provider().removeListener(consumerSix);
     }
 
+    @Test(expected = IOException.class)
+    public void errors() {
+        preferences.setBadFileSystem();
+        noveoPreferencesWrapper.getAll().remove();
+    }
+
 }

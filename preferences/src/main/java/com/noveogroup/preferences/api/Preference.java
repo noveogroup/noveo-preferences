@@ -1,7 +1,5 @@
 package com.noveogroup.preferences.api;
 
-import java.io.IOException;
-
 import java8.util.Optional;
 
 /**
@@ -24,17 +22,17 @@ public interface Preference<T> {
      * <p>If you won't wait for IO operations end - use {@link RxPreference} via {@link #rx()} method</p>
      *
      * @param value your new preference value.
-     * @throws IOException if {@link android.content.SharedPreferences.Editor#commit()} returns false.
+     * sneaky throws IOException if {@link android.content.SharedPreferences.Editor#commit()} returns false.
      */
-    void save(T value) throws IOException;
+    void save(T value);
 
     /**
      * <p>{@link android.content.SharedPreferences.Editor#commit()} is under the hood.</p>
      * <p>If you won't wait for IO operations end - use {@link RxPreference} via {@link #rx()} method</p>
      *
-     * @throws IOException if {@link android.content.SharedPreferences.Editor#commit()} returns false.
+     * sneaky throws IOException if {@link android.content.SharedPreferences.Editor#commit()} returns false.
      */
-    void remove() throws IOException;
+    void remove();
 
     /**
      * @return {@link Optional} since preference may be null and we want write code null-safe.
