@@ -11,7 +11,7 @@ import java8.util.Optional;
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
  */
-public class NoveoRxPreference<T> implements RxPreference<T> {
+class NoveoRxPreference<T> implements RxPreference<T> {
 
     private final Preference<T> preference;
     private RxPreferenceProvider<T> rxProvider;

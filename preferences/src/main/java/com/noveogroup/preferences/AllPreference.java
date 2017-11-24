@@ -15,8 +15,7 @@ import java8.util.Optional;
  * Created by avaytsekhovskiy on 23/11/2017.
  */
 @SuppressWarnings("UnusedReturnValue")
-public class
-AllPreference implements Preference<Map<String, ?>> {
+class AllPreference implements Preference<Map<String, ?>> {
 
     private final SharedPreferences preferences;
     private RxPreference<Map<String, ?>> rxPreference;

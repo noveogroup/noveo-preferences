@@ -18,7 +18,7 @@ import java8.util.Optional;
  * Created by avaytsekhovskiy on 23/11/2017.
  */
 @SuppressWarnings({"unused,WeakerAccess", "SameParameterValue"})
-public class ItemPreference<T> implements Preference<T> {
+class ItemPreference<T> implements Preference<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemPreference.class);
 
@@ -42,6 +42,8 @@ public class ItemPreference<T> implements Preference<T> {
         this.strategy = strategy;
         this.defaultValue = defaultValue;
         this.preferences = preferences;
+
+        strategy.checkNullOrThrow(defaultValue);
     }
 
     private static void log(final String key, final String message, final Object... args) {
@@ -52,7 +54,10 @@ public class ItemPreference<T> implements Preference<T> {
 
     @Override
     public Optional<T> read() {
-        return Optional.ofNullable(strategy.get(preferences, key, defaultValue));
+        if (strategy.canBeNull) {
+            return Optional.ofNullable(strategy.get(preferences, key, defaultValue));
+        }
+        return Optional.of(strategy.get(preferences, key, defaultValue));
     }
 
     @Override
@@ -64,6 +69,7 @@ public class ItemPreference<T> implements Preference<T> {
 
     @Override
     public void save(@Nullable final T value) throws IOException {
+        strategy.checkNullOrThrow(value);
         logOrThrow(
                 Utils.editPreferences(preferences, editor -> strategy.set(editor, key, value)),
                 "changed to {}", value);

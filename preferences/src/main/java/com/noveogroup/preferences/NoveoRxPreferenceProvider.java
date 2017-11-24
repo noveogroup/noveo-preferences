@@ -13,18 +13,16 @@ import java8.util.Optional;
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
  */
-public class NoveoRxPreferenceProvider<T> implements RxPreferenceProvider<T> {
+class NoveoRxPreferenceProvider<T> implements RxPreferenceProvider<T> {
 
     private final Flowable<Optional<T>> flowable;
 
     NoveoRxPreferenceProvider(final PreferenceProvider<T> preferenceProvider) {
         flowable = Flowable.create(emitter -> {
-            final Consumer<Optional<T>> consumer = value -> {
+            final Consumer<Optional<T>> consumer = preferenceProvider.addListener(value -> {
                 emitter.onNext(value);
                 emitter.requested();
-            };
-
-            preferenceProvider.addListener(consumer);
+            });
             emitter.setCancellable(() -> preferenceProvider.removeListener(consumer));
         }, BackpressureStrategy.LATEST);
     }

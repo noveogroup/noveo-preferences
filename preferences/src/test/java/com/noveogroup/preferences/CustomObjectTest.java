@@ -61,7 +61,7 @@ public class CustomObjectTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void strategySave() throws IOException {
-        final PreferenceStrategy<Object> emptyStrategy = PreferenceStrategy.builder().build();
+        final PreferenceStrategy<Object> emptyStrategy = PreferenceStrategy.builder().canBeNull(true).build();
         final Preference<Object> emptyPreference = noveoPreferencesWrapper.getObject("empty", emptyStrategy);
 
         emptyPreference.save(new CustomObjectTest());

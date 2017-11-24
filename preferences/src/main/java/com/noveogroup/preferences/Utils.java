@@ -8,10 +8,10 @@ import io.reactivex.functions.Consumer;
  * Created by avaytsekhovskiy on 23/11/2017.
  */
 @SuppressWarnings({"unchecked", "WeakerAccess"})
-public final class Utils {
+final class Utils {
 
     private Utils() {
-        //do nothing
+        throw new UnsupportedOperationException("You can't instantiate Utility classes");
     }
 
     static <E extends Throwable> void sneakyThrow(Throwable e) throws E {

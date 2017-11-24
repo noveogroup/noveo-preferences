@@ -15,7 +15,7 @@ import java8.util.Optional;
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
  */
-public class NoveoPreferenceProvider<T> implements PreferenceProvider<T> {
+class NoveoPreferenceProvider<T> implements PreferenceProvider<T> {
 
     private final Preference<T> entity;
     private final SharedPreferences preferences;
@@ -30,11 +30,12 @@ public class NoveoPreferenceProvider<T> implements PreferenceProvider<T> {
     }
 
     @Override
-    public void addListener(final Consumer<Optional<T>> changeListener) {
+    public Consumer<Optional<T>> addListener(final Consumer<Optional<T>> changeListener) {
         final SharedPreferences.OnSharedPreferenceChangeListener listener =
                 (sharedPreferences, changedKey) -> notifyListener(changeListener, changedKey);
         changeListeners.put(changeListener, listener);
         preferences.registerOnSharedPreferenceChangeListener(listener);
+        return changeListener;
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
