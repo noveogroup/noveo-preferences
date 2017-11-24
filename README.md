@@ -78,12 +78,20 @@ void observe() {
 Add these dependencies to your build.gradle:
 
 ```!groovy
+repositories {
+    maven {
+        url "http://dl.bintray.com/noveo-nsk/maven"
+    }
+}
+
 dependencies {
     implementation 'com.noveogroup:preferences:0.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.1'
     implementation 'net.sourceforge.streamsupport:streamsupport:1.5.6'
 }
 ```
+
+jCenter/mavenCentral publication coming soon.
 
 ## License
 
