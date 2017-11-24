@@ -11,14 +11,14 @@ Create your Preferences API
 ```java
 class DeveloperPreferences {
     
-    Preference<Boolean> stethoEnabled;
-    Preference<Boolean> leakCanaryEnabled;
+    Preference<Boolean> stethoPref;
+    RxPreference<Boolean> stethoRxPref;
 
     DeveloperPreferences(Context context) {
         NoveoPreferences drawerPreferences = new NoveoPreferences(context, "developers");
         
-        stethoEnabled = drawerPreferences.getBoolean("developer.key_stetho");
-        leakCanaryEnabled = drawerPreferences.getBoolean("developer.key.leak_canary");
+        stethoPref = drawerPreferences.getBoolean("developer.key_stetho");
+        stethoRxPref = stethoPref.rx();
     }
 }
 ```
@@ -27,9 +27,9 @@ Use it synchronously
 
 ```java
 void readSaveRemove() throws IOException {
-    boolean result = getPreferences().stethoEnabled.read().orElse(false)
-    getPreferences().stethoEnabled.save(true);
-    getPreferences().stethoEnabled.remove();
+    boolean value = stethoPref.read().orElse(false);
+    stethoPref.save(true);
+    stethoPref.remove();
 }
 ```
 
@@ -37,15 +37,13 @@ Observe changes with callback listener
 
 ```java
 void observe() {
-    listener = getPreferences().stethoEnabled.provider().addListener(optionalValue -> {
-        optionalValue.ifPresentedOrElse(
-            value -> //handle value changed
-            () -> //handle value removed
-        );
-    });
+    listener = canaryPref.provider().addListener(optionalValue -> optionalValue.ifPresentedOrElse(
+        value -> //handle value changed
+        () -> //handle value removed
+    ));
     
     //stop watching
-    getPreferences().stethoEnabled.provider().removeListener(listener);
+    canaryPref.provider().removeListener(listener);
 }
 
 ```
@@ -56,18 +54,9 @@ Or use rx asynchronous API.
 
 ```java
 void read() {
-    getPreferences().stethoEnabled.rx().read().subscribe(       //Single   
-            optionalValue -> // handle
-            error ->         // unlikely, but..
-    );     
-    getPreferences().stethoEnabled.rx().save(true).subscribe(
-            () ->            //saved
-            error ->         //unlikely, but..
-    ); //Completable
-    getPreferences().stethoEnabled.rx().remove().subscribe(
-            () ->            //removed
-            error ->         //unlikely, but..
-    );   //Completable
+    Single<Optional<Boolean>> single = stethoRxPref.read();
+    Completable completable = stethoRxPref.save(true);
+    Completable completable = stethoRxPref.remove();
 }
 ```
 
@@ -75,21 +64,14 @@ Observe changes
 
 ```java
 void observe() {
-    disposable = getPreferences().stethoEnabled.rx().provider().observe(optionalValue -> {
-        optionalValue.ifPresentedOrElse(
-            value -> //handle value changed
-            () -> //handle value removed
-        );
-    });
-    
-    getPreferences().stethoEnabled.rx().provider().asFlowable().subscribe(
-            value -> //handle value changed
+    Disposable disposable = stethoRxPref.provider().observe(
+        value -> //handle onNext
     );
     
-    //stop watching
-    disposable.dispose();
+    Floable<Optional<Boolean>> flowable = stethoRxPref.provider().asFlowable();
+    
+    disposable.dispose(); //stop watching
 }
-
 ```
 
 ## How to add
