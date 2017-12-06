@@ -1,4 +1,4 @@
-apply from: "build-versions.gradle"
+apply from: "gradle/build-versions.gradle"
 
 ext.versions = [
         /*GRADLE DEPENDENCIES*/

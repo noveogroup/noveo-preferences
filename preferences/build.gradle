@@ -61,4 +61,4 @@ check {
     findbugs { skip true }
 }
 
-apply from: rootProject.file('mvn-push.gradle')
+apply from: rootProject.file('gradle/mvn-push.gradle')
