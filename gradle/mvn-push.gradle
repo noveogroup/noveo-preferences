@@ -47,9 +47,9 @@ afterEvaluate { project ->
                 repository(url: repo.releaseUrl) {
                     authentication(userName: repo.user, password: repo.password)
                 }
-                snapshotRepository(url: repo.snapshotUrl) {
-                    authentication(userName: repo.user, password: repo.password)
-                }
+//                snapshotRepository(url: repo.snapshotUrl) {
+//                    authentication(userName: repo.user, password: repo.password)
+//                }
 
                 pom.project {
                     name POM_NAME
