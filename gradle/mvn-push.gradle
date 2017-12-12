@@ -90,7 +90,6 @@ afterEvaluate { project ->
     task androidJavadocs(type: Javadoc) {
         failOnError false
         source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
 
     task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
@@ -112,6 +111,8 @@ afterEvaluate { project ->
 afterEvaluate { project ->
     android.libraryVariants.all { variant ->
         tasks.androidJavadocs.doFirst {
+            source = android.sourceSets.main.java.srcDirs
+            classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
             classpath += files(variant.javaCompiler.classpath.files)
         }
     }
