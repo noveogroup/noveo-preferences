@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.noveogroup.android.check'
 
 android {
-    compileSdkVersion sdkVersions.compileSdk
-    buildToolsVersion sdkVersions.buildTools
+    compileSdkVersion config.sdk.compile
+    buildToolsVersion config.sdk.tools
 
     defaultConfig {
         applicationId "com.noveogroup.preferences.sample"
-        minSdkVersion sdkVersions.minSdk
-        targetSdkVersion sdkVersions.targetSdk
-        versionCode buildVersions.code
-        versionName buildVersions.name
+        minSdkVersion config.sdk.min
+        targetSdkVersion config.sdk.target
+        versionCode config.build.code
+        versionName config.build.name
     }
 
     compileOptions {
@@ -24,26 +25,33 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation libraries.supportAppCompat
+    implementation lib.supportAppCompat
 
     /* Library & Rx */
     implementation project(":preferences")
     implementation project(":preferences-rx2")
-    implementation libraries.rxJava2
+    implementation lib.rxJava2
 
     /* Boilerplate code generation */
-    compileOnly libraries.lombok
-    annotationProcessor libraries.lombok
+    compileOnly lib.lombok
+    annotationProcessor lib.lombok
 
     /* Logging */
-    implementation libraries.slf4j
-    implementation libraries.logbackCore
-    implementation(libraries.logbackClassic) {
+    implementation lib.slf4j
+    implementation lib.logbackCore
+    implementation(lib.logbackClassic) {
         exclude group: "com.google.android", module: "android"
     }
 
     /* Moxy */
-    implementation libraries.moxy
-    implementation libraries.moxyCompat
-    annotationProcessor libraries.moxyCompiler
+    implementation lib.moxy
+    implementation lib.moxyCompat
+    annotationProcessor lib.moxyCompiler
+}
+
+check {
+    abortOnError true
+    checkstyle { config project.rootProject.file('config/checkstyle.xml').absolutePath }
+    pmd { config project.rootProject.file('config/pmd.xml').absolutePath }
+    findbugs { skip true }
 }

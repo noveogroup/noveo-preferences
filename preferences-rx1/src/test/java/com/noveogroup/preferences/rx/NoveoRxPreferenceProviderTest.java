@@ -1,11 +1,9 @@
-package com.noveogroup.preferences;
+package com.noveogroup.preferences.rx;
 
 import com.noveogroup.preferences.api.Preference;
-import com.noveogroup.preferences.api.RxPreference;
 import com.noveogroup.preferences.guava.Optional;
 import com.noveogroup.preferences.lambda.Consumer;
-import com.noveogroup.preferences.mock.TestSharedPreferences;
-import com.noveogroup.preferences.param.Constants;
+import com.noveogroup.preferences.rx.api.RxPreference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,13 +23,13 @@ public class NoveoRxPreferenceProviderTest {
 
     @Before
     public void before() {
-        final TestSharedPreferences preferences = new TestSharedPreferences();
+        final com.noveogroup.preferences.rx.mock.TestSharedPreferences preferences = new com.noveogroup.preferences.rx.mock.TestSharedPreferences();
         preferences.edit()
-                .putBoolean("boolean", Constants.VALUE_BOOL)
-                .putLong("long", Constants.VALUE_LONG)
-                .putString("string", Constants.VALUE_STRING)
-                .putInt("int", Constants.VALUE_INT)
-                .putFloat("float", Constants.VALUE_FLOAT)
+                .putBoolean("boolean", com.noveogroup.preferences.rx.param.Constants.VALUE_BOOL)
+                .putLong("long", com.noveogroup.preferences.rx.param.Constants.VALUE_LONG)
+                .putString("string", com.noveogroup.preferences.rx.param.Constants.VALUE_STRING)
+                .putInt("int", com.noveogroup.preferences.rx.param.Constants.VALUE_INT)
+                .putFloat("float", com.noveogroup.preferences.rx.param.Constants.VALUE_FLOAT)
                 .apply();
 
         noveoPreferencesWrapper = new NoveoRxPreferences(preferences);
@@ -42,7 +40,7 @@ public class NoveoRxPreferenceProviderTest {
         final long firstValue = 1L;
         final long defaultValue = 2341234L;
         final int delayTime = 10;
-        final RxPreference<Long> rx = noveoPreferencesWrapper.getLong(Constants.KEY_LONG, defaultValue);
+        final RxPreference<Long> rx = noveoPreferencesWrapper.getLong(com.noveogroup.preferences.rx.param.Constants.KEY_LONG, defaultValue);
         final Preference<Long> simple = rx.toBlocking();
 
         final Consumer<Optional<Long>> firstValueListener = longOptional ->

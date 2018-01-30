@@ -3,8 +3,8 @@ package com.noveogroup.preferences.sample.presentation.main;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.noveogroup.preferences.api.Preference;
-import com.noveogroup.preferences.api.RxPreference;
 import com.noveogroup.preferences.guava.Optional;
+import com.noveogroup.preferences.rx.api.RxPreference;
 import com.noveogroup.preferences.sample.data.User;
 import com.noveogroup.preferences.sample.presentation.SampleApplication;
 
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Created by avaytsekhovskiy on 23/11/2017.
  */
-@SuppressWarnings("NumberEquality")
+@SuppressWarnings({"NumberEquality", "unused"})
 @InjectViewState
 @Slf4j
 public class MainPresenter extends MvpPresenter<MainView> {
@@ -31,6 +31,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private Optional<User> user = Optional.absent();
 
+    @SuppressWarnings("WeakerAccess")
     MainPresenter() {
         super();
         userPref = SampleApplication.commonPreferences.user.toBlocking();

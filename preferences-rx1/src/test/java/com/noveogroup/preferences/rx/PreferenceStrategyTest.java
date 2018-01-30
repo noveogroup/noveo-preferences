@@ -1,6 +1,9 @@
-package com.noveogroup.preferences;
+package com.noveogroup.preferences.rx;
 
-import com.noveogroup.preferences.mock.TestSharedPreferences;
+import com.noveogroup.preferences.NoveoPreferences;
+import com.noveogroup.preferences.NullPreferenceException;
+import com.noveogroup.preferences.PreferenceStrategy;
+import com.noveogroup.preferences.rx.mock.TestSharedPreferences;
 
 import org.junit.Test;
 

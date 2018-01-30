@@ -48,7 +48,7 @@ public class User {
     @SuppressWarnings("WeakerAccess")
     public static final class UserStrategy extends PreferenceStrategy<User> {
 
-        private UserStrategy() {
+        UserStrategy() {
             super(
                     createSetAction(),
                     createGetAction(),

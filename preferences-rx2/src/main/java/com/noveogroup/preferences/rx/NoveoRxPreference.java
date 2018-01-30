@@ -1,12 +1,12 @@
-package com.noveogroup.preferences;
+package com.noveogroup.preferences.rx;
 
 import com.noveogroup.preferences.api.Preference;
-import com.noveogroup.preferences.api.RxPreference;
-import com.noveogroup.preferences.api.RxPreferenceProvider;
 import com.noveogroup.preferences.guava.Optional;
+import com.noveogroup.preferences.rx.api.RxPreference;
+import com.noveogroup.preferences.rx.api.RxPreferenceProvider;
 
-import rx.Completable;
-import rx.Single;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 
 /**
  * Created by avaytsekhovskiy on 23/11/2017.

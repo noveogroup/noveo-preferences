@@ -7,7 +7,7 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.noveogroup.preferences.sample.data.User;
 
-public interface MainView extends MvpView {
+interface MainView extends MvpView {
     @StateStrategyType(AddToEndSingleStrategy.class)
     void showUser(@NonNull User user);
 

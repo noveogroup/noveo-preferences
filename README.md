@@ -6,86 +6,70 @@ Android SharedPreferences wrapper for easy Read/Write/Remove operations.
 
 ## How to use
 
-#### Create your Preferences API
-
-With `NoveoRxPreferences`
+Create `SharedPreferences` wrapper
 
 ```java
-class RxPreferences {
-    RxPreference<Boolean> developerModeRxPref;
-
-    RxPreferences(Context context) {
-        NoveoRxPreferences noveoPreferences = new NoveoRxPreferences(context, "developers");
-        
-        this.developerModeRxPref = noveoRxPreferences.getBoolean("developerMode");
-    }
-}
+NoveoRxPreferences rxPreferences = new NoveoRxPreferences(context, "developers");
 ```
 
-Or use synchronous `NoveoPreferences`
+Create your Preferences Objects
 
 ```java
-class SynchronousPreferences {
-    Preference<Boolean> developerModePref;
-
-    SynchronousPreferences(Context context) {
-        NoveoPreferences noveoPreferences = new NoveoPreferences(context, "developers");
-        
-        this.developerModePref = noveoPreferences.getBoolean("developerMode");
-    }
-}
+RxPreference<Boolean> boolPref = rxPreferences.getBoolean("bool pref");
+RxPreference<String> stringPref = rxPreferences.getString("string pref", "default");
 ```
 
-#### Use RxPreferences
+> Create them once and store as strong references in @Singleton scoped object.
 
-Operations: `read()`, `save(T value)`, `remove()` 
+#### `RxPreferences` API
 
 ```java
-Single<Optional<Boolean>> single = developerModeRxPref.read();
-Completable completable = developerModeRxPref.save(true);
-Completable completable = developerModeRxPref.remove();
+Single<Optional<Boolean>> single = boolPref.read();
+Completable completable = boolPref.save(true);
+Completable completable = boolPref.remove();
 ```
 
-and Observe changes
+> Optional.absent() will be returned in case of empty preference. Your preference can be null if `PreferenceStrategy` allows such behavior.
+
+#### `RxPreferenceProvider` API
 
 ```java
-Disposable disposable = developerModeRxPref.provider().observe(
-    value -> //handle onNext
-);
+Disposable disposable = boolPref.provider().observe(value -> //handle onNext); //observe changes
+disposable.dispose(); //stop observing
 
-//start watching
-Floable<Optional<Boolean>> flowable = developerModeRxPref.provider().asFlowable();
-
-//stop watching
-disposable.dispose(); 
+Floable<Optional<Boolean>> flowable = boolPref.provider().asFlowable(); //react & combine in RxChain
 ```
 
-#### Or use synchronously API
+#### If you don't want Rx. 
 
 ```java
-boolean value = developerModePref.read().or(false);
-developerModePref.save(true);
-developerModePref.remove();
-```
+// 1. Create
+NoveoPreferences preferences = new NoveoPreferences(context, "developers");
+Preference<Boolean> boolPref = preferences.getBoolean("bool pref");
 
-```java
-//start watching
-listener = developerModePref.provider().addListener(optional -> optional.apply(
+// 2. Edit
+Optional<Boolean> optionalValue = boolPref.read();
+/* or */  boolean value         = boolPref.read().or(false);
+boolPref.save(true);
+boolPref.remove();
+
+// 3. Observe changes
+listener = boolPref.provider().addListener(optional -> optional.apply(
     value -> //handle value changed
     () -> //handle value removed
 ));
-
-//stop watching
-developerModePref.provider().removeListener(listener);
+boolPref.provider().removeListener(listener); //stop observing
 ```
 
-### Bridge between Rx & Synchronous versions
+> Keep same Preference object to remove listener. Avoid duplicated instances.
+
+### Bridge between Rx & Regular versions
 
 Generally you should use rx preferences. If you need to use them as sync - use toBlocking().
 
 ```java
-/* to sync */ Preference developerModePref = developerModeRxPref.toBlocking();
-/* ro  rx  */ RxPreference developerModeRxPref = RxPreference.wrap(developerModePref);
+/* to sync */ Preference syncBoolPref = boolPref.toBlocking();
+/* ro  rx  */ RxPreference rxBoolPref = RxPreference.wrap(syncBoolPref);
 
 /* to sync */ NoveoPreferences preferences = rxPreferences.toBlocking();
 /* ro  rx  */ NoveoRxPreferences rxPreferences = new NoveoRxPreferences(preferences);
@@ -93,23 +77,13 @@ Generally you should use rx preferences. If you need to use them as sync - use t
 
 ## How to add
 
-Add maven repository to your project (jCenter/mavenCentral publication coming soon.)
-
-```groovy
-repositories {
-    maven {
-        url "http://dl.bintray.com/noveo-nsk/maven"
-    }
-}
-```
-
-#### Dependencies
-
 | Description | Dependencies |
 | :--- | :--- |
-| Synchronous API | `implementation 'com.noveogroup:preferences:0.0.2'` | 
-| RxJava1 Extension | `implementation 'com.noveogroup:preferences:0.0.2'`<br>`implementation 'com.noveogroup:preferences-rx1:0.0.2`<br>`implementation 'io.reactivex:rxjava:1.3.6'` | 
-| RxJava2 Extension | `implementation 'com.noveogroup:preferences:0.0.2'`<br>`implementation 'com.noveogroup:preferences-rx2:0.0.2`<br>`implementation 'io.reactivex.rxjava2:rxjava:2.1.1'` | 
+| Core API | `implementation 'com.noveogroup:preferences:0.0.2'` | 
+| RxJava1 Extension | `implementation 'com.noveogroup:preferences-rx1:0.0.2`<br>`implementation 'io.reactivex:rxjava:1.3.6'` | 
+| RxJava2 Extension | `implementation 'com.noveogroup:preferences-rx2:0.0.2`<br>`implementation 'io.reactivex.rxjava2:rxjava:2.1.1'` | 
+
+> Extensions includes Core API transitively. You don't need to include both
 
 ## Guava Optional Extensions
 

@@ -1,4 +1,4 @@
-package com.noveogroup.preferences.param;
+package com.noveogroup.preferences.rx.param;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public final class Constants {

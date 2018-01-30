@@ -1,11 +1,12 @@
 package com.noveogroup.preferences;
 
 import com.noveogroup.preferences.api.Preference;
-import com.noveogroup.preferences.api.RxPreference;
 import com.noveogroup.preferences.guava.Optional;
 import com.noveogroup.preferences.lambda.Consumer;
-import com.noveogroup.preferences.mock.TestSharedPreferences;
-import com.noveogroup.preferences.param.Constants;
+import com.noveogroup.preferences.rx.NoveoRxPreferences;
+import com.noveogroup.preferences.rx.api.RxPreference;
+import com.noveogroup.preferences.rx.mock.TestSharedPreferences;
+import com.noveogroup.preferences.rx.param.Constants;
 
 import org.junit.Before;
 import org.junit.Test;

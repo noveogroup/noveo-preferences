@@ -1,20 +1,19 @@
-package com.noveogroup.preferences.api;
+package com.noveogroup.preferences.rx.api;
 
-import com.noveogroup.preferences.NoveoRxPreferences;
+import com.noveogroup.preferences.api.Preference;
 import com.noveogroup.preferences.guava.Optional;
+import com.noveogroup.preferences.rx.NoveoRxPreferences;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-
-/**
- * Created by avaytsekhovskiy on 23/11/2017.
- */
 
 /**
  * RxJava2 Extension for read/remove/save operations above {@link Preference}.
  * <p>Provides you asynchronous methods to be used in your Rx chains.</p>
  *
  * @param <T> generic type of preference.
+ *
+ * Created by avaytsekhovskiy on 23/11/2017.
  */
 @SuppressWarnings("unused")
 public interface RxPreference<T> {

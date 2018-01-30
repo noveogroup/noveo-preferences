@@ -22,28 +22,30 @@ import com.noveogroup.preferences.sample.presentation.support.SupportWatcher;
  */
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
+    @SuppressWarnings({"WeakerAccess", "unused"})
     @InjectPresenter(type = PresenterType.LOCAL)
     MainPresenter mainPresenter;
-    private final CompoundButton.OnCheckedChangeListener onCheckedChangeListener = (buttonView, isChecked) -> mainPresenter.saveEnabled(isChecked);
-    private final TextWatcher userNameWatcher = new SupportWatcher() {
+
+    final CompoundButton.OnCheckedChangeListener onCheckedChangeListener = (buttonView, isChecked) -> mainPresenter.saveEnabled(isChecked);
+    final TextWatcher userNameWatcher = new SupportWatcher() {
         @Override
         public void afterTextChanged(final Editable text) {
             mainPresenter.saveUser(String.valueOf(text));
         }
     };
-    private final TextWatcher userAgeWatcher = new SupportWatcher() {
+    final TextWatcher userAgeWatcher = new SupportWatcher() {
         @Override
         public void afterTextChanged(final Editable text) {
             mainPresenter.saveUser(parseAge(text));
         }
     };
-    private EditText userText;
-    private EditText userAge;
-    private CheckBox enabledBox;
-    private TextView userLabel;
+    EditText userText;
+    EditText userAge;
+    CheckBox enabledBox;
+    TextView userLabel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -83,7 +85,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         findViewById(R.id.clear).setOnClickListener(view -> mainPresenter.clearAll());
     }
 
-    private Long parseAge(final CharSequence text) {
+    Long parseAge(final CharSequence text) {
         if (TextUtils.isEmpty(text)) {
             return User.NOT_AN_AGE;
         }

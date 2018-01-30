@@ -1,9 +1,5 @@
 package com.noveogroup.preferences.api;
 
-/**
- * Created by avaytsekhovskiy on 23/11/2017.
- */
-
 import com.noveogroup.preferences.guava.Optional;
 import com.noveogroup.preferences.lambda.Consumer;
 
@@ -11,6 +7,8 @@ import com.noveogroup.preferences.lambda.Consumer;
  * That class helps you to watch preference changes.
  *
  * @param <T> is a generic of preference type.
+ *
+ * Created by avaytsekhovskiy on 23/11/2017.
  */
 @SuppressWarnings("unused")
 public interface PreferenceProvider<T> {

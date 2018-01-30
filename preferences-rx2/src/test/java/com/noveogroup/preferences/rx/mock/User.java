@@ -1,4 +1,4 @@
-package com.noveogroup.preferences.mock;
+package com.noveogroup.preferences.rx.mock;
 
 @SuppressWarnings("WeakerAccess")
 public class User {

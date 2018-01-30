@@ -2,8 +2,8 @@ package com.noveogroup.preferences.sample.data;
 
 import android.content.Context;
 
-import com.noveogroup.preferences.NoveoRxPreferences;
-import com.noveogroup.preferences.api.RxPreference;
+import com.noveogroup.preferences.rx.NoveoRxPreferences;
+import com.noveogroup.preferences.rx.api.RxPreference;
 
 import java.util.Map;
 

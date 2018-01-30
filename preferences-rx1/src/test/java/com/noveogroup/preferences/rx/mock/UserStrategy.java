@@ -1,4 +1,4 @@
-package com.noveogroup.preferences.mock;
+package com.noveogroup.preferences.rx.mock;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;

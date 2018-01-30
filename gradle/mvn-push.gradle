@@ -1,14 +1,14 @@
 /*
  * Copyright 2013 Chris Banes
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -16,22 +16,22 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-def KEY_USER = "NEXUS_USERNAME"
-def KEY_PASS = "NEXUS_PASSWORD"
+def KEY_USER = 'NEXUS_USERNAME'
+def KEY_PASS = 'NEXUS_PASSWORD'
 
 def secrets = new Properties()
-secrets.load(new FileInputStream(rootProject.file("secret.properties")))
+secrets.load(new FileInputStream(rootProject.file('secret.properties')))
 
 ext.repo = [
-        user: secrets.getProperty(KEY_USER, "undefined_user"),
-        password: secrets.getProperty(KEY_PASS, "undefined_password"),
-        releaseUrl: hasProperty("RELEASE_REPOSITORY_URL") ? RELEASE_REPOSITORY_URL : "unknown_release_repo",
-        snapshotUrl: hasProperty("SNAPSHOT_REPOSITORY_URL") ? SNAPSHOT_REPOSITORY_URL : "unknown_snapshot_repo"
+        user: secrets.getProperty(KEY_USER, 'undefined_user'),
+        password: secrets.getProperty(KEY_PASS, 'undefined_password'),
+        releaseUrl: hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL : 'unknown_release_repo',
+        snapshotUrl: hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL : 'unknown_snapshot_repo'
 ]
 
-@SuppressWarnings(["GrMethodMayBeStatic", "GroovyPointlessBoolean"])
+@SuppressWarnings(['GrMethodMayBeStatic', 'GroovyPointlessBoolean'])
 def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
+    return VERSION_NAME.contains('SNAPSHOT') == false
 }
 
 afterEvaluate { project ->
@@ -83,7 +83,7 @@ afterEvaluate { project ->
     }
 
     signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        required { isReleaseBuild() && gradle.taskGraph.hasTask('uploadArchives') }
         sign configurations.archives
     }
 
@@ -110,10 +110,13 @@ afterEvaluate { project ->
 
 afterEvaluate { project ->
     android.libraryVariants.all { variant ->
-        tasks.androidJavadocs.doFirst {
-            source = android.sourceSets.main.java.srcDirs
-            classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-            classpath += files(variant.javaCompiler.classpath.files)
+        if (variant.name == 'release') {
+            tasks.androidJavadocs.doFirst {
+                source = variant.javaCompiler.source
+                classpath += project.files(android.bootClasspath.join(File.pathSeparator))
+                classpath += files(variant.javaCompiler.classpath.files)
+                exclude '**/R.html', '**/R.*.html', '**/index.html'
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
-package com.noveogroup.preferences;
+package com.noveogroup.preferences.rx;
 
 import com.noveogroup.preferences.api.PreferenceProvider;
-import com.noveogroup.preferences.api.RxPreferenceProvider;
 import com.noveogroup.preferences.guava.Optional;
 import com.noveogroup.preferences.lambda.Consumer;
+import com.noveogroup.preferences.rx.api.RxPreferenceProvider;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;

@@ -1,9 +1,10 @@
 package com.noveogroup.preferences;
 
-import com.noveogroup.preferences.api.RxPreference;
-import com.noveogroup.preferences.mock.TestSharedPreferences;
-import com.noveogroup.preferences.mock.User;
-import com.noveogroup.preferences.mock.UserStrategy;
+import com.noveogroup.preferences.rx.NoveoRxPreferences;
+import com.noveogroup.preferences.rx.api.RxPreference;
+import com.noveogroup.preferences.rx.mock.TestSharedPreferences;
+import com.noveogroup.preferences.rx.mock.User;
+import com.noveogroup.preferences.rx.mock.UserStrategy;
 
 import org.junit.Before;
 import org.junit.Test;

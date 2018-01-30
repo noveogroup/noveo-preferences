@@ -1,9 +1,5 @@
 package com.noveogroup.preferences.api;
 
-/**
- * Created by avaytsekhovskiy on 23/11/2017.
- */
-
 import com.noveogroup.preferences.guava.Optional;
 
 /**
@@ -13,6 +9,8 @@ import com.noveogroup.preferences.guava.Optional;
  * <p>In addition wrapper provides RxJava2 extension and change listeners.</p>
  *
  * @param <T> type of preference.
+ *
+ * Created by avaytsekhovskiy on 23/11/2017.
  */
 public interface Preference<T> {
 

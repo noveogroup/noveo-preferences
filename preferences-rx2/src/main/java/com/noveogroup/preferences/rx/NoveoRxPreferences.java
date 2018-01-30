@@ -1,12 +1,16 @@
-package com.noveogroup.preferences;
+package com.noveogroup.preferences.rx;
 
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
+import com.noveogroup.preferences.NoveoPreferences;
+import com.noveogroup.preferences.PreferenceStrategy;
 import com.noveogroup.preferences.api.Preference;
-import com.noveogroup.preferences.api.RxPreference;
+import com.noveogroup.preferences.rx.api.RxPreference;
+
+import org.slf4j.Logger;
 
 import java.util.Map;
 
@@ -75,7 +79,7 @@ public class NoveoRxPreferences {
     }
 
     /**
-     * if true - library will use @Slf4j {@link org.slf4j.Logger} to write logs.
+     * if true - library will use @Slf4j {@link Logger} to write logs.
      *
      * @return true if enabled. false otherwise.
      */
@@ -84,7 +88,7 @@ public class NoveoRxPreferences {
     }
 
     /**
-     * Enabled logging with @Slf4j {@link org.slf4j.Logger}
+     * Enabled logging with @Slf4j {@link Logger}
      *
      * @param debug boolean to enable.
      */
