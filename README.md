@@ -1,5 +1,7 @@
 # Noveo Preferences
 
+[ ![Preferences-rx2](https://api.bintray.com/packages/noveo-nsk/maven/preferences-rx2/images/download.svg) ](https://bintray.com/noveo-nsk/maven/preferences-rx2/_latestVersion)
+
 Android SharedPreferences wrapper for easy Read/Write/Remove operations.
 
 + [RxJava1 / RxJava2](https://github.com/ReactiveX/RxJava) integration.
@@ -79,9 +81,9 @@ Generally you should use rx preferences. If you need to use them as sync - use t
 
 | Description | Dependencies |
 | :--- | :--- |
-| Core API | `implementation 'com.noveogroup:preferences:0.0.2'` | 
-| RxJava1 Extension | `implementation 'com.noveogroup:preferences-rx1:0.0.2`<br>`implementation 'io.reactivex:rxjava:1.3.6'` | 
-| RxJava2 Extension | `implementation 'com.noveogroup:preferences-rx2:0.0.2`<br>`implementation 'io.reactivex.rxjava2:rxjava:2.1.1'` | 
+| Core API | `implementation 'com.noveogroup:preferences:0.0.3'` | 
+| RxJava1 Extension | `implementation 'com.noveogroup:preferences-rx1:0.0.3`<br>`implementation 'io.reactivex:rxjava:1.3.6'` | 
+| RxJava2 Extension | `implementation 'com.noveogroup:preferences-rx2:0.0.3`<br>`implementation 'io.reactivex.rxjava2:rxjava:2.1.1'` | 
 
 > Extensions includes Core API transitively. You don't need to include both
 
